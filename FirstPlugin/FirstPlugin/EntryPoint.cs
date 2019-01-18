@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms.VisualStyles;
 using Rage;
 using Rage.Attributes;
+using Rage.Native;
 using Graphics = Rage.Graphics;
 
 [assembly: Rage.Attributes.Plugin("My First Plugin", Description = "This is my first plugin.", Author = "emeloni")]
@@ -20,6 +21,7 @@ namespace FirstPlugin
         static void BoundingBoxGraphicHandler(object sender, GraphicsEventArgs e)
         {
             var ped = Game.LocalPlayer.Character;
+
             Weapon wp = ped.Inventory.EquippedWeaponObject;
 
             var graphics = e.Graphics;
@@ -144,5 +146,59 @@ namespace FirstPlugin
             Game.LocalPlayer.WantedLevel = 0;
             Game.DisplayHelp("Here you go bro");
         }
+
+        enum PedVariationData
+        {
+            PED_VARIATION_FACE = 0,
+            PED_VARIATION_HEAD = 1,
+            PED_VARIATION_HAIR = 2, 
+            PED_VARIATION_TORSO = 3, // jackets and shirts(camicie)
+            PED_VARIATION_LEGS = 4, // jeans
+            PED_VARIATION_HANDS = 5,
+            PED_VARIATION_FEET = 6, // shoes
+            PED_VARIATION_EYES = 7, 
+            PED_VARIATION_ACCESSORIES = 8,
+            PED_VARIATION_TASKS = 9,
+            PED_VARIATION_TEXTURES = 10,
+            PED_VARIATION_TORSO2 = 11 //t-shirts
+        };
+
+        [ConsoleCommand]
+        private static void Command_GetDress(int variation)
+        {
+            Game.Console.Print($"Input is {variation}");
+
+            Ped me = Game.LocalPlayer.Character;
+
+            int drawableIndex;
+            int textureIndex;
+            me.GetVariation(variation, out drawableIndex, out textureIndex);
+
+            Game.Console.Print($"Variation is: {drawableIndex}, {textureIndex}");
+        }
+
+        [ConsoleCommand]
+        private static void Command_SetDress(int componentId, int drawableIndex, int textureIndex)
+        {
+            Game.LocalPlayer.Character.SetVariation(componentId, drawableIndex, textureIndex);
+
+            Game.LocalPlayer.Character.SetVariation(componentId, drawableIndex, textureIndex);
+        }
+
+        [ConsoleCommand]
+        private static void Command_GetProp(int componentId)
+        {
+            Ped me = Game.LocalPlayer.Character;
+            int propIndex = NativeFunction.Natives.GetPedPropIndex<int>(me, componentId);
+            Game.Console.Print($"Prop attached is: {propIndex}");
+        }
+
+        [ConsoleCommand]
+        private static void Command_SetProp(int componentId, int drawableId, int textureId)
+        {
+            Ped me = Game.LocalPlayer.Character;
+            int propIndex = NativeFunction.Natives.SetPedPropIndex<int>(me, componentId, drawableId, textureId, true);
+        }
+
     }
 }
