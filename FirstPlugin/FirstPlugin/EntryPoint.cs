@@ -31,14 +31,14 @@ namespace FirstPlugin
                 wp.Model.GetDimensions(out var weaponBottomLeft, out var weaponTopRight);
 
                 //Compute the size of the three sides of the box
-                Vector3 size = (weaponTopRight - weaponBottomLeft)*BoundingBoxScaleFactor;
+                Vector3 size = (weaponTopRight - weaponBottomLeft) * BoundingBoxScaleFactor;
 
                 //Compute the offset of the weapon center relative to the origin of the model
                 Vector3 centerOffset = (weaponTopRight + weaponBottomLeft) / 2.0f;
 
                 //Now we must rotate the center offset computed on the model, to match the entity orientation
                 var rotatedCenterOffset = Transform(centerOffset, wp.Orientation);
-                
+
                 var wireBoxCenter = wp.Position + rotatedCenterOffset;
 
                 //We compute the wirebox, by computing the edges starting from the wireboxCenter
@@ -59,7 +59,7 @@ namespace FirstPlugin
                             //this is an offset from the wirebox center, not yet rotated to match the entity orientation
                             Vector3 edgeOffsetFromWireBoxCenter = new Vector3(
                                 size.X / 2f * coefficientX,
-                                size.Y / 2f * coefficientY, 
+                                size.Y / 2f * coefficientY,
                                 size.Z / 2f * coefficientZ
                             );
 
@@ -92,11 +92,11 @@ namespace FirstPlugin
                     new Vector2(maxX, minY),
                     new Vector2(maxX, maxY)
                 };
-                
+
                 graphics.DrawLine(rectEdges[0], rectEdges[1], Color.Red);
                 graphics.DrawLine(rectEdges[1], rectEdges[2], Color.Red);
                 graphics.DrawLine(rectEdges[2], rectEdges[3], Color.Red);
-                graphics.DrawLine(rectEdges[3], rectEdges[0], Color.Red);    
+                graphics.DrawLine(rectEdges[3], rectEdges[0], Color.Red);
             }
         }
 
@@ -108,7 +108,6 @@ namespace FirstPlugin
             Game.RawFrameRender += BoundingBoxGraphicHandler;
 
             GameFiber.Hibernate();
-
         }
 
         //Vector3.Transform returns always a Vector4, whose fourth component can be safely ignored
@@ -132,7 +131,7 @@ namespace FirstPlugin
                 "WEAPON_GRENADE"
             };
 
-            foreach(var weapon in weapons)
+            foreach (var weapon in weapons)
             {
                 me.Inventory.GiveNewWeapon(weapon, 100, false);
             }
@@ -151,12 +150,12 @@ namespace FirstPlugin
         {
             PED_VARIATION_FACE = 0,
             PED_VARIATION_HEAD = 1,
-            PED_VARIATION_HAIR = 2, 
+            PED_VARIATION_HAIR = 2,
             PED_VARIATION_TORSO = 3, // jackets and shirts(camicie)
             PED_VARIATION_LEGS = 4, // jeans
             PED_VARIATION_HANDS = 5,
             PED_VARIATION_FEET = 6, // shoes
-            PED_VARIATION_EYES = 7, 
+            PED_VARIATION_EYES = 7,
             PED_VARIATION_ACCESSORIES = 8,
             PED_VARIATION_TASKS = 9,
             PED_VARIATION_TEXTURES = 10,
@@ -166,13 +165,11 @@ namespace FirstPlugin
         [ConsoleCommand]
         private static void Command_GetDress(int variation)
         {
-            Game.Console.Print($"Input is {variation}");
-
-            Ped me = Game.LocalPlayer.Character;
+            Ped ped = lastPed ?? Game.LocalPlayer.Character;
 
             int drawableIndex;
             int textureIndex;
-            me.GetVariation(variation, out drawableIndex, out textureIndex);
+            ped.GetVariation(variation, out drawableIndex, out textureIndex);
 
             Game.Console.Print($"Variation is: {drawableIndex}, {textureIndex}");
         }
@@ -180,25 +177,48 @@ namespace FirstPlugin
         [ConsoleCommand]
         private static void Command_SetDress(int componentId, int drawableIndex, int textureIndex)
         {
-            Game.LocalPlayer.Character.SetVariation(componentId, drawableIndex, textureIndex);
 
-            Game.LocalPlayer.Character.SetVariation(componentId, drawableIndex, textureIndex);
+            Ped ped = lastPed ?? Game.LocalPlayer.Character;
+            ped.SetVariation(componentId, drawableIndex, textureIndex);
+
+            ped.SetVariation(componentId, drawableIndex, textureIndex);
         }
 
         [ConsoleCommand]
         private static void Command_GetProp(int componentId)
         {
-            Ped me = Game.LocalPlayer.Character;
-            int propIndex = NativeFunction.Natives.GetPedPropIndex<int>(me, componentId);
+            Ped ped = lastPed ?? Game.LocalPlayer.Character;
+            int propIndex = NativeFunction.Natives.GetPedPropIndex<int>(ped, componentId);
             Game.Console.Print($"Prop attached is: {propIndex}");
         }
 
         [ConsoleCommand]
         private static void Command_SetProp(int componentId, int drawableId, int textureId)
         {
-            Ped me = Game.LocalPlayer.Character;
-            int propIndex = NativeFunction.Natives.SetPedPropIndex<int>(me, componentId, drawableId, textureId, true);
+            Ped ped = lastPed ?? Game.LocalPlayer.Character;
+            int propIndex = NativeFunction.Natives.SetPedPropIndex<int>(ped, componentId, drawableId, textureId, true);
         }
 
+
+        private static Ped lastPed = null;
+
+        [ConsoleCommand]
+        private static void Command_SpawnPed()
+        {
+            Model workModel = new Model("s_m_y_airworker");
+            Vector3 playerPosition = Game.LocalPlayer.Character.Position;
+            Vector3 offset = new Vector3(0, 0, 0);
+            lastPed = new Ped(workModel, playerPosition + offset, 0);
+        }
+
+        [ConsoleCommand]
+        private static void Command_DespawnLastPed()
+        {
+            if (lastPed != null)
+            {
+                lastPed.Delete();
+                lastPed = null;
+            }
+        }
     }
 }
