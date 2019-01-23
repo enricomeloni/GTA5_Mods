@@ -4,9 +4,11 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using Rage;
 using Rage.Attributes;
+using Rage.Forms;
 using Rage.Native;
 using Graphics = Rage.Graphics;
 
@@ -17,7 +19,7 @@ namespace FirstPlugin
     public class EntryPoint
     {
         private const float BoundingBoxScaleFactor = 1.05f;
-
+        
         static void BoundingBoxGraphicHandler(object sender, GraphicsEventArgs e)
         {
             var ped = Game.LocalPlayer.Character;
@@ -107,7 +109,27 @@ namespace FirstPlugin
 
             Game.RawFrameRender += BoundingBoxGraphicHandler;
 
-            GameFiber.Hibernate();
+            while (true)
+            {
+                var keyboardState = Game.GetKeyboardState();
+
+                if (keyboardState.PressedKeys.Contains(Keys.F9))
+                {
+                    Game.IsPaused = true;
+                    var gwenForm = new TestForm();
+                    gwenForm.Show();
+                    gwenForm.Position = new System.Drawing.Point(300, 300);
+
+                    while (gwenForm.Window.IsVisible)
+                    {
+                        GameFiber.Yield();
+                    }
+
+                    Game.IsPaused = false;
+                }
+
+                GameFiber.Yield();
+            }
         }
 
         //Vector3.Transform returns always a Vector4, whose fourth component can be safely ignored
