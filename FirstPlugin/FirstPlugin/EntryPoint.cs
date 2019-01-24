@@ -24,6 +24,8 @@ namespace FirstPlugin
         {
             var ped = Game.LocalPlayer.Character;
 
+            ped.GetBonePosition(PedBoneId)
+
             Weapon wp = ped.Inventory.EquippedWeaponObject;
 
             var graphics = e.Graphics;
