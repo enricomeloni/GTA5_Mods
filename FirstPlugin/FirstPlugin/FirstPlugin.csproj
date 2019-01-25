@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntryPoint.cs" />
+    <Compile Include="ExtendVector3.cs" />
     <Compile Include="FormTemplate.cs">
       <SubType>Form</SubType>
     </Compile>

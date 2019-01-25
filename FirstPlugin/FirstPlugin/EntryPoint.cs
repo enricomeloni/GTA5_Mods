@@ -23,9 +23,6 @@ namespace FirstPlugin
         static void BoundingBoxGraphicHandler(object sender, GraphicsEventArgs e)
         {
             var ped = Game.LocalPlayer.Character;
-
-            ped.GetBonePosition(PedBoneId)
-
             Weapon wp = ped.Inventory.EquippedWeaponObject;
 
             var graphics = e.Graphics;
@@ -41,7 +38,7 @@ namespace FirstPlugin
                 Vector3 centerOffset = (weaponTopRight + weaponBottomLeft) / 2.0f;
 
                 //Now we must rotate the center offset computed on the model, to match the entity orientation
-                var rotatedCenterOffset = Transform(centerOffset, wp.Orientation);
+                var rotatedCenterOffset = centerOffset.Rotate(wp.Orientation);
 
                 var wireBoxCenter = wp.Position + rotatedCenterOffset;
 
@@ -68,7 +65,7 @@ namespace FirstPlugin
                             );
 
                             //rotate the offset to match the entity orientation
-                            Vector3 rotatedEdgeOffset = Transform(edgeOffsetFromWireBoxCenter, wp.Orientation);
+                            Vector3 rotatedEdgeOffset = edgeOffsetFromWireBoxCenter.Rotate(wp.Orientation);
                             var edge = wireBoxCenter + rotatedEdgeOffset;
                             wireboxEdges.Add(edge);
                         }
@@ -132,13 +129,6 @@ namespace FirstPlugin
 
                 GameFiber.Yield();
             }
-        }
-
-        //Vector3.Transform returns always a Vector4, whose fourth component can be safely ignored
-        private static Vector3 Transform(Vector3 vector, Quaternion orientation)
-        {
-            Vector4 transformedVector4 = Vector3.Transform(vector, orientation);
-            return new Vector3(transformedVector4.X, transformedVector4.Y, transformedVector4.Z);
         }
 
         [ConsoleCommand]
