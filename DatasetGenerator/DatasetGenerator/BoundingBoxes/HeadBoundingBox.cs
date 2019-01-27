@@ -5,15 +5,17 @@ namespace DatasetGenerator.BoundingBoxes
     partial class BoundingBox
     {
         private const float HeadScaleFactor = 1.4f;
-        private static BoundingBox FromHead(Vector3 headBonePosition, Quaternion headOrientation)
+        public static BoundingBox FromHead(Ped ped)
         {
-            //since there is no information about head size, i used average sizes of world population
+            Vector3 headBonePosition = ped.GetBonePosition(PedBoneId.Head);
+            Quaternion headOrientation = ped.GetBoneOrientation(PedBoneId.Head);
 
+            //since there is no information about head size, i used average sizes of world population
             //todo: insert also data for women
 
             float headBreadth = 15.2f / 100;
             float headLength = 19.7f / 100;
-            float headHeight = 23.2f / 100 * 1.1f; //account 20% more height for helmet
+            float headHeight = 23.2f / 100 * 1.1f; //account 10% more height for helmet
 
             Vector3 headSize = new Vector3(headHeight, headLength, headBreadth) * HeadScaleFactor;
 

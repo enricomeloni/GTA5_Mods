@@ -60,21 +60,5 @@ namespace DatasetGenerator.BoundingBoxes
 
             return new BoundingRect(topLeft, bottomRight);
         }
-
-
-        public static BoundingBox FromBone(Ped ped, PedBoneId boneId)
-        {
-            Vector3 bonePosition = ped.GetBonePosition(boneId);
-            Quaternion boneQuaternion = ped.GetBoneOrientation(boneId);
-
-            switch (boneId)
-            {
-                case PedBoneId.Head:
-                    return FromHead(bonePosition, boneQuaternion);
-                default:
-                    return null;
-            }
-
-        }
     }
 }

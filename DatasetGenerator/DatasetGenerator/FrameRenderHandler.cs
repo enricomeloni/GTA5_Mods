@@ -22,9 +22,6 @@ namespace DatasetGenerator
             //Vector2 spine2 = World.ConvertWorldPositionToScreenPosition(ped.GetBonePosition(PedBoneId.Spine2));
             //graphics.DrawFilledCircle(spine2, 5, Color.Orange);
 
-            BoundingBox headBox = BoundingBox.FromBone(ped, PedBoneId.Head);
-            BoundingRect headRect = headBox.ToBoundingRect();
-            BoundsDrawer.DrawBoundingRect(headRect, graphics);
 
             if (wp && wp.IsVisible)
             {
@@ -33,6 +30,9 @@ namespace DatasetGenerator
 
                 //BoundsDrawer.DrawBoundingBox(bb, graphics);
                 BoundsDrawer.DrawBoundingRect(br, graphics);
+                BoundingBox headBox = BoundingBox.FromHead(ped);
+                BoundingRect headRect = headBox.ToBoundingRect();
+                BoundsDrawer.DrawBoundingRect(headRect, graphics);
             }
 
             BoundingBox chestBox = BoundingBox.FromChest(ped);
