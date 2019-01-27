@@ -4,6 +4,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms.VisualStyles;
 using DatasetGenerator.BoundingBoxes;
 using Rage;
 
@@ -18,9 +19,7 @@ namespace DatasetGenerator
             
             var me = Game.LocalPlayer.Character;
             
-
-
-            List<Ped> nearbyPeds = new List<Ped>(me.GetNearbyPeds(16));
+            List<Ped> nearbyPeds = new List<Ped>(me.GetNearbyPeds(2));
             nearbyPeds.Add(me);
 
             //Vector2 spine2 = World.ConvertWorldPositionToScreenPosition(ped.GetBonePosition(PedBoneId.Spine2));
