@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DatasetGenerator.BoundingBoxes;
 using Rage;
 using Graphics = Rage.Graphics;
 
@@ -22,23 +23,15 @@ namespace DatasetGenerator
         
         public static void DrawBoundingBox(BoundingBox box, Graphics graphics)
         {
-            try
+            foreach (Vector2 edge1 in box.ProjectedEdges)
             {
-                foreach (Vector2 edge1 in box.ProjectedEdges)
+                foreach (Vector2 edge2 in box.ProjectedEdges)
                 {
-                    foreach (Vector2 edge2 in box.ProjectedEdges)
+                    if (!edge1.Equals(edge2))
                     {
-                        if (!edge1.Equals(edge2))
-                        {
-                            graphics.DrawLine(edge1, edge2, Color.Blue);
-                        }
+                        graphics.DrawLine(edge1, edge2, Color.Blue);
                     }
                 }
-            }
-            catch (AccessViolationException ex)
-            {
-                Game.DisplayNotification("Access Violation??");
-                //try to ignore for now
             }
         }
     }
