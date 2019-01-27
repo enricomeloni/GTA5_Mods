@@ -1,30 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Rage;
 
-namespace DatasetGenerator
+namespace DatasetGenerator.BoundingBoxes
 {
-    class BoundingBox
+    partial class BoundingBox
     {
-        //This controls how much boxes should be bigger than the real object
-        public const float ScaleFactor = 1.05f;
 
         public Vector3[] Edges { get; set; }
 
         /// <summary>
         /// <exception cref="AccessViolationException"> For some unknown reasons, sometimes projecting world position to screen position causes memory access violation. </exception>
         /// </summary>
-        public Vector2[] ProjectedEdges => Edges.Select(World.ConvertWorldPositionToScreenPosition).ToArray();
+        public Vector2[] ProjectedEdges => Edges.Select(edge => ExtensionMethods.ProjectToScreen(edge)).ToArray();
 
         public BoundingBox(Vector3 center, Vector3 size, Quaternion orientation)
         {
             var coefficients = new List<int> { -1, 1 };
             var wireboxEdges = new List<Vector3>();
-
-            var scaledSize = size * ScaleFactor;
 
             /*
              * The wirebox edges can be computed by summing or subtracting half the size of the wirebox
@@ -38,9 +32,9 @@ namespace DatasetGenerator
                     {
                         //this is an offset from the wirebox center, not yet rotated to match the entity orientation
                         Vector3 edgeOffsetFromWireBoxCenter = new Vector3(
-                            scaledSize.X / 2f * coefficientX,
-                            scaledSize.Y / 2f * coefficientY,
-                            scaledSize.Z / 2f * coefficientZ
+                            size.X / 2f * coefficientX,
+                            size.Y / 2f * coefficientY,
+                            size.Z / 2f * coefficientZ
                         );
 
                         //rotate the offset to match the entity orientation
@@ -68,23 +62,19 @@ namespace DatasetGenerator
         }
 
 
-        public static BoundingBox FromWeapon(Weapon weapon)
+        public static BoundingBox FromBone(Ped ped, PedBoneId boneId)
         {
-            weapon.Model.GetDimensions(out var weaponBottomLeft, out var weaponTopRight);
+            Vector3 bonePosition = ped.GetBonePosition(boneId);
+            Quaternion boneQuaternion = ped.GetBoneOrientation(boneId);
 
-            //Compute the size of the three sides of the box
-            Vector3 size = weaponTopRight - weaponBottomLeft;
+            switch (boneId)
+            {
+                case PedBoneId.Head:
+                    return FromHead(bonePosition, boneQuaternion);
+                default:
+                    return null;
+            }
 
-            //Compute the offset of the weapon center relative to the origin of the model
-            Vector3 centerOffset = (weaponTopRight + weaponBottomLeft) / 2.0f;
-
-            //Now we must rotate the center offset computed on the model, to match the entity orientation
-            var rotatedCenterOffset = centerOffset.Rotate(weapon.Orientation);
-
-            var wireBoxCenter = weapon.Position + rotatedCenterOffset;
-            return new BoundingBox(wireBoxCenter, size, weapon.Orientation);
         }
-
-
     }
 }
