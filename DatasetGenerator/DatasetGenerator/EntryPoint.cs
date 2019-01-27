@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Rage;
 using Rage.Attributes;
 using Rage.Native;
@@ -32,11 +35,56 @@ namespace DatasetGenerator
             }
         }
 
-        {
-            Game.DisplaySubtitle("Dataset generator loaded");
-            Game.RawFrameRender += BoundingBoxGraphicHandler;
 
-            GameFiber.Hibernate();
+        [ConsoleCommand]
+        private static void Command_GetDress(int variation)
+        {
+            Ped ped = Game.LocalPlayer.Character;
+
+            int drawableIndex;
+            int textureIndex;
+            ped.GetVariation(variation, out drawableIndex, out textureIndex);
+
+            Game.Console.Print($"Variation is: {drawableIndex}, {textureIndex}");
         }
+
+        [ConsoleCommand]
+        private static void Command_SetDress(int componentId, int drawableIndex, int textureIndex)
+        {
+
+            Ped ped = Game.LocalPlayer.Character;
+            ped.SetVariation(componentId, drawableIndex, textureIndex);
+
+            ped.SetVariation(componentId, drawableIndex, textureIndex);
+        }
+
+        [ConsoleCommand]
+        private static void Command_GetProp(int componentId)
+        {
+            Ped ped = Game.LocalPlayer.Character;
+            int propIndex = NativeFunction.Natives.GetPedPropIndex<int>(ped, componentId);
+            Game.Console.Print($"Prop attached is: {propIndex}");
+        }
+
+        [ConsoleCommand]
+        private static void Command_SetProp(int componentId, int drawableId, int textureId)
+        {
+            Ped ped = Game.LocalPlayer.Character;
+            int propIndex = NativeFunction.Natives.SetPedPropIndex<int>(ped, componentId, drawableId, textureId, true);
+        }
+
+        [ConsoleCommand]
+        private static void Command_Project()
+        {
+            float vector_x;
+            float vector_y;
+
+            var vector3 = Game.LocalPlayer.Character.Position;
+
+            NativeFunction.Natives.xF9904D11F1ACBEC3(vector3.X, vector3.Y, vector3.Z, out vector_x, out vector_y);
+
+            Game.DisplaySubtitle($"Projected is ({vector_x},{vector_y})");
+        }
+
     }
 }
