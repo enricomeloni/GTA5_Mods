@@ -21,35 +21,40 @@ namespace DatasetGenerator
             var graphics = e.Graphics;
             var cameraValues = Utility.GetGameplayCameraValues();
             var me = Game.LocalPlayer.Character;
-            var wp = me.Inventory.EquippedWeaponObject;
 
-            /*using (var disposableCamera = new DisposableCamera("DEFAULT_SCRIPTED_CAMERA"))
+            var nearbyPeds = new List<Ped>(me.GetNearbyPeds(5));
+
+            using (var disposableCamera = new DisposableCamera(DisposableCamera.DefaultScriptedCamera))
             {
                 var camera = disposableCamera.Camera;
+                camera.SetCameraValues(Utility.GetGameplayCameraValues());
 
-                camera.Position = cameraValues.Position;
-                camera.Rotation = cameraValues.Rotation;
-                
-            }*/
-
-            if (wp && wp.IsVisible)
-            {
-                var wpBox = BoundingBox.FromWeapon(wp);
-
-                using (var disposableCamera = new DisposableCamera(DisposableCamera.DefaultScriptedCamera))
+                foreach (var ped in nearbyPeds)
                 {
-                    var camera = disposableCamera.Camera;
-                    camera.SetCameraValues(Utility.GetGameplayCameraValues());
-
-                    if (wpBox.ShouldDraw(camera))
+                    var headBox = BoundingBox.FromHead(ped);
+                    if (headBox.ShouldDraw(camera))
                     {
-                        wpBox.ToBoundingRect().Draw(graphics, Color.Red);
+                        headBox.ToBoundingRect().Draw(graphics, Color.Blue);
+                    }
+
+                    var chestBox = BoundingBox.FromChest(ped);
+                    if (chestBox.ShouldDraw(camera))
+                    {
+                        chestBox.ToBoundingRect().Draw(graphics, Color.Violet);
+                    }
+
+                    var weapon = ped.Inventory.EquippedWeaponObject;
+
+                    if (weapon && weapon.IsVisible)
+                    {
+                        var weaponBox = BoundingBox.FromWeapon(weapon);
+                        if (weaponBox.ShouldDraw(camera))
+                        {
+                            weaponBox.ToBoundingRect().Draw(graphics, Color.Red);
+                        }
                     }
                 }
-                
             }
-
-
         }
     }
 }
