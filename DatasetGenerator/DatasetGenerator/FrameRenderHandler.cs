@@ -1,53 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.VisualStyles;
 using DatasetGenerator.BoundingBoxes;
 using Rage;
+using Rage.Native;
 
 namespace DatasetGenerator
 {
     class FrameRenderHandler
     {
+        public static Camera OldCamera { get; set; }
+
         public static void BoundingBoxGraphicHandler(object sender, GraphicsEventArgs e)
         {
-
             var graphics = e.Graphics;
-            
+            var cameraValues = Utility.GetGameplayCameraValues();
             var me = Game.LocalPlayer.Character;
-            
-            List<Ped> nearbyPeds = new List<Ped>(me.GetNearbyPeds(2));
-            nearbyPeds.Add(me);
+            var wp = me.Inventory.EquippedWeaponObject;
 
-            //Vector2 spine2 = World.ConvertWorldPositionToScreenPosition(ped.GetBonePosition(PedBoneId.Spine2));
-            //graphics.DrawFilledCircle(spine2, 5, Color.Orange);
-
-            foreach (var ped in nearbyPeds)
+            /*using (var disposableCamera = new DisposableCamera("DEFAULT_SCRIPTED_CAMERA"))
             {
+                var camera = disposableCamera.Camera;
 
-                BoundingBox headBox = BoundingBox.FromHead(ped);
-                BoundingRect headRect = headBox.ToBoundingRect();
-                BoundsDrawer.DrawBoundingRect(headRect, graphics);
-                Weapon wp = ped.Inventory.EquippedWeaponObject;
-                if (wp && wp.IsVisible)
+                camera.Position = cameraValues.Position;
+                camera.Rotation = cameraValues.Rotation;
+                
+            }*/
+
+            if (wp && wp.IsVisible)
+            {
+                var wpBox = BoundingBox.FromWeapon(wp);
+
+                using (var disposableCamera = new DisposableCamera(DisposableCamera.DefaultScriptedCamera))
                 {
-                    BoundingBox bb = BoundingBox.FromWeapon(wp);
-                    BoundingRect br = bb.ToBoundingRect();
+                    var camera = disposableCamera.Camera;
+                    camera.SetCameraValues(Utility.GetGameplayCameraValues());
 
-                    //BoundsDrawer.DrawBoundingBox(bb, graphics);
-                    BoundsDrawer.DrawBoundingRect(br, graphics);
+                    if (wpBox.ShouldDraw(camera))
+                    {
+                        wpBox.ToBoundingRect().Draw(graphics, Color.Red);
+                    }
                 }
-
-                BoundingBox chestBox = BoundingBox.FromChest(ped);
-                //BoundsDrawer.DrawBoundingBox(chestBox, graphics);
-                BoundsDrawer.DrawBoundingRect(chestBox.ToBoundingRect(), graphics);
-
-                BoundingBox pedBox = BoundingBox.FromPed(ped);
-                //BoundsDrawer.DrawBoundingBox(pedBox, graphics);
+                
             }
+
 
         }
     }

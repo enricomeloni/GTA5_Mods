@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Rage;
+using Graphics = Rage.Graphics;
 
 namespace DatasetGenerator
 {
@@ -25,5 +27,13 @@ namespace DatasetGenerator
             new Vector2(BottomRight.X, BottomRight.Y),
             new Vector2(TopLeft.X, BottomRight.Y)
         };
+
+        public void Draw(Graphics graphics, Color color)
+        {
+            graphics.DrawLine(Edges[0], Edges[1], color);
+            graphics.DrawLine(Edges[1], Edges[2], color);
+            graphics.DrawLine(Edges[2], Edges[3], color);
+            graphics.DrawLine(Edges[3], Edges[0], color);
+        }
     }
 }

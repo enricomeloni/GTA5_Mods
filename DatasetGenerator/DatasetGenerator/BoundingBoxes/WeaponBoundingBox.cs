@@ -20,7 +20,7 @@ namespace DatasetGenerator.BoundingBoxes
             var rotatedCenterOffset = centerOffset.Rotate(weapon.Orientation);
 
             var wireBoxCenter = weapon.Position + rotatedCenterOffset;
-            return new BoundingBox(wireBoxCenter, size, weapon.Orientation);
+            return new BoundingBox(wireBoxCenter, size, weapon.Orientation, weapon);
         }
     }
 }

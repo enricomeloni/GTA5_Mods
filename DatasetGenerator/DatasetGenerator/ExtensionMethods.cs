@@ -19,14 +19,13 @@ namespace DatasetGenerator
 
         public static Vector2 ProjectToScreen(this Vector3 vector3)
         {
-            float vector_x;
-            float vector_y;
-
-            //NativeFunction.Natives.xF9904D11F1ACBEC3(vector3.X, vector3.Y, vector3.Z, out vector_x, out vector_y);
-            //return new Vector2(vector_x, vector_y);
-
-
             return World.ConvertWorldPositionToScreenPosition(vector3);
+        }
+
+        public static void SetCameraValues(this Camera camera, CameraValues cameraValues)
+        {
+            camera.Position = cameraValues.Position;
+            camera.Rotation = cameraValues.Rotation;
         }
     }
 }

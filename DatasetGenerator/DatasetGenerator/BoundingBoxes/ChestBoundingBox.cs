@@ -24,7 +24,7 @@ namespace DatasetGenerator.BoundingBoxes
 
             Vector3 chestSize = new Vector3(chestWidth, chestLength, chestHeight) * ChestScaleFactor;
 
-            return new BoundingBox(spineBonePosition, chestSize, chestOrientation);
+            return new BoundingBox(spineBonePosition, chestSize, chestOrientation, ped);
         }
 
     }

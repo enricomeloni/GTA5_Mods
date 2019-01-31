@@ -24,7 +24,7 @@ namespace DatasetGenerator.BoundingBoxes
 
             Vector3 headCenter = rotatedOffset + headBonePosition;
 
-            return new BoundingBox(headCenter, headSize, headOrientation);
+            return new BoundingBox(headCenter, headSize, headOrientation, ped);
         }
     }
 }

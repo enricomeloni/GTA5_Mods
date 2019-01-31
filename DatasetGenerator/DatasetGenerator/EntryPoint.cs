@@ -31,6 +31,60 @@ namespace DatasetGenerator
                 else if (keyboardState.PressedKeys.Contains(Keys.F10))
                     Game.IsPaused = false;
 
+                Camera camera = null;
+
+                /*var disposableCamera = new DisposableCamera("DEFAULT_SCRIPTED_CAMERA");
+
+                var camera = disposableCamera.Camera;
+                var cameraValues = Utility.GetGameplayCameraValues();
+
+                cameraValues.Position += new Vector3(5, 5, 0);
+
+
+                camera.SetCameraValues(cameraValues);
+                */
+
+                if (keyboardState.PressedKeys.Contains(Keys.F6))
+                {
+                    /*Game.DisplaySubtitle("Pressing f6");
+
+                    if (camera == null)
+                    {
+                        var disposableCamera = new DisposableCamera("DEFAULT_SCRIPTED_CAMERA");
+                        camera = disposableCamera.Camera;
+                        var cameraValues = Utility.GetGameplayCameraValues();
+
+                        cameraValues.Position += new Vector3(5, 5, 0);
+
+
+                        camera.SetCameraValues(cameraValues);
+                    }
+
+                    if (camera.IsValid())
+                    {
+                        camera.Active = true;
+                    }
+
+                    //camera.Shake(1000);
+                    */
+                }
+
+                if (keyboardState.PressedKeys.Contains(Keys.F7))
+                {
+                    /*if (camera != null && camera.IsValid())
+                    {
+                        camera.Active = false;
+                    }
+                    */
+                }
+
+                if (keyboardState.PressedKeys.Contains(Keys.F11))
+                {
+                    Model workModel = new Model("s_m_y_airworker");
+                    Vector3 pedPosition = Game.LocalPlayer.Character.FrontPosition;
+                    var ped = new Ped(workModel, pedPosition, 0);
+                }
+
                 GameFiber.Yield();
             }
         }

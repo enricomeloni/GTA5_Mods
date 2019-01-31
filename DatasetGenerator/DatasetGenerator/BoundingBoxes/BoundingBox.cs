@@ -1,12 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Rage;
+using Graphics = Rage.Graphics;
 
 namespace DatasetGenerator.BoundingBoxes
 {
     partial class BoundingBox
     {
+        public const int HitTreshold = 8;
+
+        public Entity Entity { get; }
+        public Vector3 Center { get; }
+        public Vector3 Size { get; }
+        public Quaternion Orientation { get; }
 
         public Vector3[] Edges { get; set; }
 
@@ -15,8 +23,13 @@ namespace DatasetGenerator.BoundingBoxes
         /// </summary>
         public Vector2[] ProjectedEdges => Edges.Select(edge => ExtensionMethods.ProjectToScreen(edge)).ToArray();
 
-        public BoundingBox(Vector3 center, Vector3 size, Quaternion orientation)
+        public BoundingBox(Vector3 center, Vector3 size, Quaternion orientation, Entity entity)
         {
+            Entity = entity;
+            Center = center;
+            Size = size;
+            Orientation = orientation;
+
             var coefficients = new List<int> { -1, 1 };
             var wireboxEdges = new List<Vector3>();
 
@@ -32,9 +45,9 @@ namespace DatasetGenerator.BoundingBoxes
                     {
                         //this is an offset from the wirebox center, not yet rotated to match the entity orientation
                         Vector3 edgeOffsetFromWireBoxCenter = new Vector3(
-                            size.X / 2f * coefficientX,
-                            size.Y / 2f * coefficientY,
-                            size.Z / 2f * coefficientZ
+                            Size.X / 2f * coefficientX,
+                            Size.Y / 2f * coefficientY,
+                            Size.Z / 2f * coefficientZ
                         );
 
                         //rotate the offset to match the entity orientation
@@ -48,6 +61,23 @@ namespace DatasetGenerator.BoundingBoxes
             Edges = wireboxEdges.ToArray();
         }
 
+        public bool ShouldDraw(Camera camera)
+        {
+            int hitCounter = 0;
+
+            foreach (var edge in Edges)
+            {
+                var hitResult = World.TraceLine(camera.Position, edge, TraceFlags.IntersectEverything, Entity);
+                if (hitResult.Hit)
+                {
+                    ++hitCounter;
+                }
+            }
+            
+            return hitCounter < HitTreshold;
+        }
+
+
         public BoundingRect ToBoundingRect()
         {
             var maxX = ProjectedEdges.Max(edge => edge.X);
@@ -59,6 +89,20 @@ namespace DatasetGenerator.BoundingBoxes
             Vector2 bottomRight = new Vector2(maxX, minY);
 
             return new BoundingRect(topLeft, bottomRight);
+        }
+
+        public void Draw(Graphics graphics, Color color)
+        {
+            foreach (Vector2 edge1 in ProjectedEdges)
+            {
+                foreach (Vector2 edge2 in ProjectedEdges)
+                {
+                    if (!edge1.Equals(edge2))
+                    {
+                        graphics.DrawLine(edge1, edge2, color);
+                    }
+                }
+            }
         }
     }
 }

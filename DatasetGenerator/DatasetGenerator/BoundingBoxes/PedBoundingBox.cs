@@ -13,7 +13,7 @@ namespace DatasetGenerator.BoundingBoxes
             Vector3 centerOffset = (frontTopRight + rearBottomLeft) / 2.0f;
             Vector3 wireboxCenter = ped.Position + centerOffset.Rotate(ped.Orientation);
 
-            return new BoundingBox(wireboxCenter, size, ped.Orientation);
+            return new BoundingBox(wireboxCenter, size, ped.Orientation, ped);
         }
     }
 }
