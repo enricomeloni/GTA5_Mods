@@ -1,4 +1,5 @@
 ﻿using System;
+using DatasetGenerator.DetectedObjects;
 using Rage;
 
 namespace DatasetGenerator.BoundingBoxes
@@ -26,7 +27,15 @@ namespace DatasetGenerator.BoundingBoxes
             Vector3 chestSize = new Vector3(chestWidth, chestLength, chestHeight) * ChestScaleFactor;
 
             Initialize(spineBonePosition, chestSize, chestOrientation, ped);
+        }
 
+        public override DetectedObject ToDetectedObject()
+        {
+            return new DetectedObject
+            {
+                BoundingRect = ToBoundingRect(),
+                ObjectClass = ObjectClass.BareChest
+            };
         }
     }
 }

@@ -34,13 +34,21 @@ namespace DatasetGenerator
                     var headBox = new HeadBoundingBox(ped);
                     if (headBox.ShouldDraw(camera))
                     {
-                        headBox.ToBoundingRect().Draw(graphics, Color.Blue);
+                        /*var detectedObject = new DetectedObject()
+                        {
+                            BoundingRect = headBox.ToBoundingRect()
+                        };
+                        */
+
+                        var detectedHead = headBox.ToDetectedObject();
+                        detectedHead.BoundingRect.Draw(graphics, Color.Blue);
                     }
 
                     var chestBox = new ChestBoundingBox(ped);
                     if (chestBox.ShouldDraw(camera))
                     {
-                        chestBox.ToBoundingRect().Draw(graphics, Color.Violet);
+                        var detectedChest = chestBox.ToDetectedObject();
+                        detectedChest.BoundingRect.Draw(graphics, Color.Violet);
                     }
 
                     var weapon = ped.Inventory.EquippedWeaponObject;
@@ -50,7 +58,8 @@ namespace DatasetGenerator
                         var weaponBox = new WeaponBoundingBox(weapon);
                         if (weaponBox.ShouldDraw(camera))
                         {
-                            weaponBox.ToBoundingRect().Draw(graphics, Color.Red);
+                            var detectedWeapon = weaponBox.ToDetectedObject();
+                            detectedWeapon.BoundingRect.Draw(graphics, Color.Red);
                         }
                     }
                 }

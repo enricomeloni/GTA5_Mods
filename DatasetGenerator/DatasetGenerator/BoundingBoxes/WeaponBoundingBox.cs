@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using DatasetGenerator.DetectedObjects;
+using Rage;
 
 namespace DatasetGenerator.BoundingBoxes
 {
@@ -21,6 +22,15 @@ namespace DatasetGenerator.BoundingBoxes
 
             var wireBoxCenter = weapon.Position + rotatedCenterOffset;
             Initialize(wireBoxCenter, size, weapon.Orientation, weapon);
+        }
+
+        public override DetectedObject ToDetectedObject()
+        {
+            return new DetectedObject
+            {
+                BoundingRect = ToBoundingRect(),
+                ObjectClass = ObjectClass.FiringWeapon
+            };
         }
     }
 }

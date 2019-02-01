@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using DatasetGenerator.DetectedObjects;
 using Rage;
 using Graphics = Rage.Graphics;
 
 namespace DatasetGenerator.BoundingBoxes
 {
-    class BoundingBox
+    abstract class BoundingBox
     {
         public const int HitTreshold = 8;
 
@@ -22,8 +23,6 @@ namespace DatasetGenerator.BoundingBoxes
         /// <exception cref="AccessViolationException"> For some unknown reasons, sometimes projecting world position to screen position causes memory access violation. </exception>
         /// </summary>
         public Vector2[] ProjectedEdges => Edges.Select(edge => ExtensionMethods.ProjectToScreen(edge)).ToArray();
-
-        protected BoundingBox() { }
 
         protected void Initialize(Vector3 center, Vector3 size, Quaternion orientation, Entity entity)
         {
@@ -63,11 +62,6 @@ namespace DatasetGenerator.BoundingBoxes
             Edges = wireboxEdges.ToArray();
         }
 
-        public BoundingBox(Vector3 center, Vector3 size, Quaternion orientation, Entity entity)
-        {
-            Initialize(center, size, orientation, entity);
-        }
-
         public bool ShouldDraw(Camera camera)
         {
             int hitCounter = 0;
@@ -85,7 +79,7 @@ namespace DatasetGenerator.BoundingBoxes
         }
 
 
-        public BoundingRect ToBoundingRect()
+        protected BoundingRect ToBoundingRect()
         {
             var maxX = ProjectedEdges.Max(edge => edge.X);
             var maxY = ProjectedEdges.Max(edge => edge.Y);
@@ -111,5 +105,8 @@ namespace DatasetGenerator.BoundingBoxes
                 }
             }
         }
+
+
+        public abstract DetectedObject ToDetectedObject();
     }
 }

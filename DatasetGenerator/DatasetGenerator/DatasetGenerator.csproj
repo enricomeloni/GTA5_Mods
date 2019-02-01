@@ -55,12 +55,15 @@
     <Compile Include="BoundsDrawer.cs" />
     <Compile Include="BoundingRect.cs" />
     <Compile Include="CameraValues.cs" />
+    <Compile Include="DetectedObjects\DetectedObject.cs" />
     <Compile Include="DisposableCamera.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="BoundingBoxes\HeadBoundingBox.cs" />
     <Compile Include="BoundingBoxes\PedBoundingBox.cs" />
+    <Compile Include="FrameMetadata.cs" />
     <Compile Include="FrameRenderHandler.cs" />
+    <Compile Include="ObjectClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BoundingBoxes\WeaponBoundingBox.cs" />
     <Compile Include="Utility.cs" />
