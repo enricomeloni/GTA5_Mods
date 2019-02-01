@@ -31,13 +31,13 @@ namespace DatasetGenerator
 
                 foreach (var ped in nearbyPeds)
                 {
-                    var headBox = BoundingBox.FromHead(ped);
+                    var headBox = new HeadBoundingBox(ped);
                     if (headBox.ShouldDraw(camera))
                     {
                         headBox.ToBoundingRect().Draw(graphics, Color.Blue);
                     }
 
-                    var chestBox = BoundingBox.FromChest(ped);
+                    var chestBox = new ChestBoundingBox(ped);
                     if (chestBox.ShouldDraw(camera))
                     {
                         chestBox.ToBoundingRect().Draw(graphics, Color.Violet);
@@ -47,7 +47,7 @@ namespace DatasetGenerator
 
                     if (weapon && weapon.IsVisible)
                     {
-                        var weaponBox = BoundingBox.FromWeapon(weapon);
+                        var weaponBox = new WeaponBoundingBox(weapon);
                         if (weaponBox.ShouldDraw(camera))
                         {
                             weaponBox.ToBoundingRect().Draw(graphics, Color.Red);

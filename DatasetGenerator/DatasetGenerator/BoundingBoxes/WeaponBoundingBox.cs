@@ -2,16 +2,16 @@
 
 namespace DatasetGenerator.BoundingBoxes
 {
-    partial class BoundingBox
+    class WeaponBoundingBox : BoundingBox
     {
         private const float WeaponScaleFactor = 1.1f;
 
-        public static BoundingBox FromWeapon(Weapon weapon)
+        public WeaponBoundingBox(Weapon weapon)
         {
             weapon.Model.GetDimensions(out var weaponBottomLeft, out var weaponTopRight);
 
             //Compute the size of the three sides of the box
-            Vector3 size = (weaponTopRight - weaponBottomLeft)*WeaponScaleFactor;
+            Vector3 size = (weaponTopRight - weaponBottomLeft) * WeaponScaleFactor;
 
             //Compute the offset of the weapon center relative to the origin of the model
             Vector3 centerOffset = (weaponTopRight + weaponBottomLeft) / 2.0f;
@@ -20,7 +20,7 @@ namespace DatasetGenerator.BoundingBoxes
             var rotatedCenterOffset = centerOffset.Rotate(weapon.Orientation);
 
             var wireBoxCenter = weapon.Position + rotatedCenterOffset;
-            return new BoundingBox(wireBoxCenter, size, weapon.Orientation, weapon);
+            Initialize(wireBoxCenter, size, weapon.Orientation, weapon);
         }
     }
 }

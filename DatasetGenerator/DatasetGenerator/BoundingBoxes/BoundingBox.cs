@@ -7,23 +7,25 @@ using Graphics = Rage.Graphics;
 
 namespace DatasetGenerator.BoundingBoxes
 {
-    partial class BoundingBox
+    class BoundingBox
     {
         public const int HitTreshold = 8;
 
-        public Entity Entity { get; }
-        public Vector3 Center { get; }
-        public Vector3 Size { get; }
-        public Quaternion Orientation { get; }
+        public Entity Entity { get; private set; }
+        public Vector3 Center { get; private set; }
+        public Vector3 Size { get; private set; }
+        public Quaternion Orientation { get; private set; }
 
-        public Vector3[] Edges { get; set; }
+        public Vector3[] Edges { get; private set; }
 
         /// <summary>
         /// <exception cref="AccessViolationException"> For some unknown reasons, sometimes projecting world position to screen position causes memory access violation. </exception>
         /// </summary>
         public Vector2[] ProjectedEdges => Edges.Select(edge => ExtensionMethods.ProjectToScreen(edge)).ToArray();
 
-        public BoundingBox(Vector3 center, Vector3 size, Quaternion orientation, Entity entity)
+        protected BoundingBox() { }
+
+        protected void Initialize(Vector3 center, Vector3 size, Quaternion orientation, Entity entity)
         {
             Entity = entity;
             Center = center;
@@ -59,6 +61,11 @@ namespace DatasetGenerator.BoundingBoxes
             }
 
             Edges = wireboxEdges.ToArray();
+        }
+
+        public BoundingBox(Vector3 center, Vector3 size, Quaternion orientation, Entity entity)
+        {
+            Initialize(center, size, orientation, entity);
         }
 
         public bool ShouldDraw(Camera camera)
