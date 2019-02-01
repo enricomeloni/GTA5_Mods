@@ -55,7 +55,7 @@
     <Compile Include="BoundsDrawer.cs" />
     <Compile Include="BoundingRect.cs" />
     <Compile Include="CameraValues.cs" />
-    <Compile Include="DetectedObjects\DetectedObject.cs" />
+    <Compile Include="DetectedObject.cs" />
     <Compile Include="DisposableCamera.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="ExtensionMethods.cs" />

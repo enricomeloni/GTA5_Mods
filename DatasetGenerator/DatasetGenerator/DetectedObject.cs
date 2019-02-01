@@ -1,4 +1,4 @@
-﻿namespace DatasetGenerator.DetectedObjects
+﻿namespace DatasetGenerator
 {
     class DetectedObject
     {

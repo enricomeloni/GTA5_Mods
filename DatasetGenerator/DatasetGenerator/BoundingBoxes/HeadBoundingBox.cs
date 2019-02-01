@@ -1,5 +1,4 @@
-﻿using DatasetGenerator.DetectedObjects;
-using Rage;
+﻿using Rage;
 
 namespace DatasetGenerator.BoundingBoxes
 {
