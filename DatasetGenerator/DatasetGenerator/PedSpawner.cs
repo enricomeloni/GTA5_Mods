@@ -9,18 +9,11 @@ namespace DatasetGenerator
     public abstract class PedSpawner
     {
         private static readonly Random Random = new Random();
-
-        private static readonly PedType[] PedTypes =
-        {
-            new AirWorker(),
-            new DockWorkerM(),
-            new DockWorkerY()
-        };
-
+        
         public static void SpawnNewPed(Vector3 pedPosition)
         {
-            var typeIndex = Random.Next(0, PedTypes.Length);
-            var pedType = PedTypes[typeIndex];
+            var typeIndex = Random.Next(0, PedType.PedTypes.Length);
+            var pedType = PedType.PedTypes[typeIndex];
 
             var ped = new Ped(pedType.GetModel(), pedPosition, 0);
 

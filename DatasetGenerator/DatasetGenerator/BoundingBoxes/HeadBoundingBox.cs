@@ -30,10 +30,24 @@ namespace DatasetGenerator.BoundingBoxes
 
         public override DetectedObject ToDetectedObject()
         {
+            var ped = (Ped) Entity;
+            var pedClassifier = ped.GetPedClassifier();
+
+            ObjectClass objectClass;
+
+            if (pedClassifier.HasHelmet())
+                objectClass = ObjectClass.HeadWithHelmet;
+            else if (pedClassifier.HasFaceShield())
+                objectClass = ObjectClass.HeadWithFaceShield;
+            else if (pedClassifier.HasHearingProtection())
+                objectClass = ObjectClass.HeadWithHearingProtection;
+            else
+                objectClass = ObjectClass.BareHead;
+
             return new DetectedObject
             {
                 BoundingRect = ToBoundingRect(),
-                ObjectClass = ObjectClass.BareHead
+                ObjectClass = objectClass
             };
         }
     }

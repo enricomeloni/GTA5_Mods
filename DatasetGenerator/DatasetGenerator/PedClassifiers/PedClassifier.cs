@@ -2,7 +2,7 @@
 
 namespace DatasetGenerator.PedClassifiers
 {
-    abstract class PedClassifier
+    public abstract class PedClassifier
     {
         public Ped Ped { get; }
         protected PedClassifier(Ped ped)

@@ -40,14 +40,24 @@ namespace DatasetGenerator
                     {
                         
                         var detectedHead = headBox.ToDetectedObject();
-
-                        var dockWorkerMClassifier = new DockWorkerMClassifier(ped);
                         Color color;
-                        if (dockWorkerMClassifier.HasHelmet())
-                            color = Color.Blue;
-                        else
+                        switch (detectedHead.ObjectClass)
                         {
-                            color = Color.BlueViolet;
+                            case ObjectClass.BareHead:
+                                color = Color.Blue;
+                                break;
+                            case ObjectClass.HeadWithHelmet:
+                                color = Color.Red;
+                                break;
+                            case ObjectClass.HeadWithFaceShield:
+                                color = Color.Aqua;
+                                break;
+                            case ObjectClass.HeadWithHearingProtection:
+                                color = Color.BlueViolet;
+                                break;
+                            default:
+                                color = Color.Black;
+                                break;
                         }
 
                         detectedHead.BoundingRect.Draw(graphics, color);
@@ -57,10 +67,9 @@ namespace DatasetGenerator
                     if (chestBox.ShouldDraw(camera))
                     {
                         var detectedChest = chestBox.ToDetectedObject();
-
-                        var dockWorkerMClassifier = new DockWorkerMClassifier(ped);
+                        
                         Color color;
-                        if (dockWorkerMClassifier.HasHighVisibilityVest())
+                        if (detectedChest.ObjectClass == ObjectClass.BareChest)
                             color = Color.Blue;
                         else
                         {

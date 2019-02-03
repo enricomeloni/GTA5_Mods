@@ -9,8 +9,15 @@ using Rage;
 
 namespace DatasetGenerator.PedTypes
 {
-    abstract class PedType
+    public abstract class PedType
     {
+        public static readonly PedType[] PedTypes =
+        {
+            new AirWorker(),
+            new DockWorkerM(),
+            new DockWorkerY()
+        };
+
         public abstract int[] GetVariationComponentChoices();
         public abstract int[] GetVariationDrawableChoices(int componentId);
         public abstract int[] GetVariationTextureChoices(int componentId, int drawableId);
@@ -38,6 +45,17 @@ namespace DatasetGenerator.PedTypes
             }
 
             return randomProps;
+        }
+
+        public static PedType FromModel(Model model)
+        {
+            foreach (var pedType in PedTypes)
+            {
+                if (pedType.GetModel().Name.Equals(model.Name))
+                    return pedType;
+            }
+
+            return null;
         }
     }
 }

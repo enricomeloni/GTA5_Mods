@@ -69,6 +69,7 @@
     <Compile Include="PedClassifiers\DockWorkerYClassifier.cs" />
     <Compile Include="PedClassifiers\PedClassifier.cs" />
     <Compile Include="PedClassifiers\PropComponentIds.cs" />
+    <Compile Include="PedClassifiers\RandomPedClassifier.cs" />
     <Compile Include="PedClassifiers\VariationComponentIds.cs" />
     <Compile Include="PedSpawner.cs" />
     <Compile Include="PedTypes\AirWorker.cs" />

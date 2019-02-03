@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DatasetGenerator.PedClassifiers;
+using DatasetGenerator.PedTypes;
 using Rage;
 using Rage.Native;
 
@@ -46,6 +47,19 @@ namespace DatasetGenerator
             var enumerableArray = enumerable as T[] ?? enumerable.ToArray();
             var randomIndex = random.Next(0, enumerableArray.Length);
             return enumerableArray[randomIndex];
+        }
+
+        public static PedType GetPedType(this Ped ped)
+        {
+            return PedType.FromModel(ped.Model);
+        }
+
+        public static PedClassifier GetPedClassifier(this Ped ped)
+        {
+            var pedType = ped.GetPedType();
+            if(pedType == null)
+                return new RandomPedClassifier(ped);
+            return pedType.GetPedClassifier(ped);
         }
     }
 }

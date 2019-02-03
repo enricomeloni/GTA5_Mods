@@ -30,10 +30,19 @@ namespace DatasetGenerator.BoundingBoxes
 
         public override DetectedObject ToDetectedObject()
         {
+            var ped = (Ped) Entity;
+            var pedClassifier = ped.GetPedClassifier();
+
+            ObjectClass objectClass;
+            if (pedClassifier.HasHighVisibilityVest())
+                objectClass = ObjectClass.ChestWithHighVisibilityVest;
+            else
+                objectClass = ObjectClass.BareChest;
+
             return new DetectedObject
             {
                 BoundingRect = ToBoundingRect(),
-                ObjectClass = ObjectClass.BareChest
+                ObjectClass = objectClass
             };
         }
     }
