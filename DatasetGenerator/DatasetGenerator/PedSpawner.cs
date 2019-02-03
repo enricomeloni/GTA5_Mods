@@ -4,7 +4,7 @@ using DatasetGenerator.PedClassifiers;
 using DatasetGenerator.PedTypes;
 using Rage;
 
-namespace DatasetGenerator.PedSpawners
+namespace DatasetGenerator
 {
     public abstract class PedSpawner
     {

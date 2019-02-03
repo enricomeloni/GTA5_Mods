@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DatasetGenerator.PedClassifiers;
-using DatasetGenerator.PedSpawners;
 using Rage;
 using Rage.Attributes;
 using Rage.Native;

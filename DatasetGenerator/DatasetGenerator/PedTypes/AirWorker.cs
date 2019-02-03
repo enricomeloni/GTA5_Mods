@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DatasetGenerator.PedClassifiers;
-using DatasetGenerator.PedSpawners;
 using Rage;
 
 namespace DatasetGenerator.PedTypes

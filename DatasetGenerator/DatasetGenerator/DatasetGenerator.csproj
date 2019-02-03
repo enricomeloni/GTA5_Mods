@@ -70,7 +70,7 @@
     <Compile Include="PedClassifiers\PedClassifier.cs" />
     <Compile Include="PedClassifiers\PropComponentIds.cs" />
     <Compile Include="PedClassifiers\VariationComponentIds.cs" />
-    <Compile Include="PedSpawners\PedSpawner.cs" />
+    <Compile Include="PedSpawner.cs" />
     <Compile Include="PedTypes\AirWorker.cs" />
     <Compile Include="PedTypes\DockWorkerM.cs" />
     <Compile Include="PedTypes\DockWorkerY.cs" />
