@@ -12,5 +12,7 @@ namespace DatasetGenerator.PedClassifiers
 
         public abstract bool HasHelmet();
         public abstract bool HasHighVisibilityVest();
+        public abstract bool HasHearingProtection();
+        public abstract bool HasFaceShield();
     }
 }

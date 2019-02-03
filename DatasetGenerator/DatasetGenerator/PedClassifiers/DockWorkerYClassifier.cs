@@ -7,16 +7,16 @@ using Rage;
 
 namespace DatasetGenerator.PedClassifiers
 {
-    class DockWorkerMClassifier : PedClassifier
+    class DockWorkerYClassifier : PedClassifier
     {
-        public DockWorkerMClassifier(Ped ped) : base(ped)
+        public DockWorkerYClassifier(Ped ped) : base(ped)
         {
         }
 
         public override bool HasHelmet()
         {
             Ped.GetPropIndex(PropComponentIds.Head, out var propIndex, out var _);
-            return propIndex == 0;
+            return propIndex == 1;
         }
 
         public override bool HasHighVisibilityVest()
@@ -27,13 +27,13 @@ namespace DatasetGenerator.PedClassifiers
 
         public override bool HasHearingProtection()
         {
-            return false;
+            Ped.GetPropIndex(PropComponentIds.Head, out var propIndex, out var _);
+            return propIndex == 2;
         }
 
         public override bool HasFaceShield()
         {
-            Ped.GetPropIndex(PropComponentIds.Head, out var propIndex, out var _);
-            return propIndex == 3;
+            return false;
         }
     }
 }

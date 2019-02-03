@@ -10,6 +10,7 @@ namespace DatasetGenerator
     {
         BareHead,
         HeadWithHelmet,
+        HeadWithFaceShield,
         BareChest,
         ChestWithHighVisibilityVest,
         FiringWeapon,
