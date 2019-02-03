@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DatasetGenerator.PedClassifiers;
 using Rage;
 using Rage.Native;
 
@@ -26,6 +27,17 @@ namespace DatasetGenerator
         {
             camera.Position = cameraValues.Position;
             camera.Rotation = cameraValues.Rotation;
+        }
+
+        public static void GetPropIndex(this Ped ped, PropComponentIds componentId, out int? drawableId, out int? textureId)
+        {
+            drawableId = NativeFunction.Natives.GetPedPropIndex<int>(ped, (int)componentId);
+            textureId = NativeFunction.Natives.GetPedPropTextureIndex(ped, (int)componentId);
+        }
+
+        public static void SetPropIndex(this Ped ped, PropComponentIds componentId, int drawableId, int textureId)
+        {
+            NativeFunction.Natives.SetPedPropIndex(ped, (int)componentId, drawableId, textureId, true);
         }
     }
 }

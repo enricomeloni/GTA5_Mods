@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.ExceptionServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DatasetGenerator.PedClassifiers;
 using Rage;
 using Rage.Attributes;
 using Rage.Native;
+using Graphics = System.Drawing.Graphics;
 
 
 [assembly: Rage.Attributes.Plugin("Dataset Generator", Description = "This plugin is used to generate a dataset for object detection training.", Author = "emeloni")]
@@ -30,59 +34,34 @@ namespace DatasetGenerator
                     Game.IsPaused = true;
                 else if (keyboardState.PressedKeys.Contains(Keys.F10))
                     Game.IsPaused = false;
-
-                Camera camera = null;
-
-                /*var disposableCamera = new DisposableCamera("DEFAULT_SCRIPTED_CAMERA");
-
-                var camera = disposableCamera.Camera;
-                var cameraValues = Utility.GetGameplayCameraValues();
-
-                cameraValues.Position += new Vector3(5, 5, 0);
-
-
-                camera.SetCameraValues(cameraValues);
-                */
-
+                
                 if (keyboardState.PressedKeys.Contains(Keys.F6))
                 {
-                    /*Game.DisplaySubtitle("Pressing f6");
-
-                    if (camera == null)
-                    {
-                        var disposableCamera = new DisposableCamera("DEFAULT_SCRIPTED_CAMERA");
-                        camera = disposableCamera.Camera;
-                        var cameraValues = Utility.GetGameplayCameraValues();
-
-                        cameraValues.Position += new Vector3(5, 5, 0);
-
-
-                        camera.SetCameraValues(cameraValues);
-                    }
-
-                    if (camera.IsValid())
-                    {
-                        camera.Active = true;
-                    }
-
-                    //camera.Shake(1000);
-                    */
+                    Size resolution = Game.Resolution;
+                    var bitmap = new Bitmap(resolution.Width, resolution.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                    var graphics = Graphics.FromImage(bitmap);
+                    graphics.CopyFromScreen(0, 0, 0, 0, resolution);
+                    bitmap.Save(@"D:\test.png", ImageFormat.Bmp);
                 }
 
                 if (keyboardState.PressedKeys.Contains(Keys.F7))
                 {
-                    /*if (camera != null && camera.IsValid())
-                    {
-                        camera.Active = false;
-                    }
-                    */
+                    Game.DisplaySubtitle(Game.LocalPlayer.Character.Model.Name);
                 }
-
-                if (keyboardState.PressedKeys.Contains(Keys.F11))
+                
+                if (Game.IsKeyDown(Keys.F11))
                 {
-                    Model workModel = new Model("s_m_y_airworker");
+                    Model workModel = new Model("s_m_m_dockwork_01");
                     Vector3 pedPosition = Game.LocalPlayer.Character.FrontPosition;
                     var ped = new Ped(workModel, pedPosition, 0);
+
+                    Random rand = new Random();
+                    int randomInt = rand.Next(0, 100);
+                    if (randomInt < 50)
+                    {
+                        ped.SetPropIndex(PropComponentIds.Head, 0, 0);
+                    }
+
                 }
 
                 GameFiber.Yield();
