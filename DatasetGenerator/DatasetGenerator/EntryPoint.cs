@@ -24,10 +24,15 @@ namespace DatasetGenerator
         public static void Main()
         {
             Game.DisplaySubtitle("Dataset generator loaded");
+            Game.LocalPlayer.IsIgnoredByEveryone = true;
+            Game.LocalPlayer.IsIgnoredByPolice = true;
+
             Game.FrameRender += FrameRenderHandler.BoundingBoxGraphicHandler;
 
             while (true)
             {
+                Game.LocalPlayer.WantedLevel = 0;
+
                 var keyboardState = Game.GetKeyboardState();
 
                 if (keyboardState.PressedKeys.Contains(Keys.F9))
