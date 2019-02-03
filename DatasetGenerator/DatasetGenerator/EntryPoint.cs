@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DatasetGenerator.PedClassifiers;
+using DatasetGenerator.PedSpawners;
 using Rage;
 using Rage.Attributes;
 using Rage.Native;
@@ -51,17 +52,9 @@ namespace DatasetGenerator
                 
                 if (Game.IsKeyDown(Keys.F11))
                 {
-                    Model workModel = new Model("s_m_m_dockwork_01");
                     Vector3 pedPosition = Game.LocalPlayer.Character.FrontPosition;
-                    var ped = new Ped(workModel, pedPosition, 0);
 
-                    Random rand = new Random();
-                    int randomInt = rand.Next(0, 100);
-                    if (randomInt < 50)
-                    {
-                        ped.SetPropIndex(PropComponentIds.Head, 0, 0);
-                    }
-
+                    PedSpawner.SpawnNewPed(pedPosition);
                 }
 
                 GameFiber.Yield();

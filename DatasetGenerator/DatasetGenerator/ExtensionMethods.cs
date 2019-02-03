@@ -39,5 +39,13 @@ namespace DatasetGenerator
         {
             NativeFunction.Natives.SetPedPropIndex(ped, (int)componentId, drawableId, textureId, true);
         }
+
+        public static T RandomElement<T>(this IEnumerable<T> enumerable)
+        {
+            Random random = new Random();
+            var enumerableArray = enumerable as T[] ?? enumerable.ToArray();
+            var randomIndex = random.Next(0, enumerableArray.Length);
+            return enumerableArray[randomIndex];
+        }
     }
 }
