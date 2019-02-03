@@ -20,7 +20,6 @@ namespace DatasetGenerator
         public static void BoundingBoxGraphicHandler(object sender, GraphicsEventArgs e)
         {
             var graphics = e.Graphics;
-            var cameraValues = Utility.GetGameplayCameraValues();
             var me = Game.LocalPlayer.Character;
 
             var nearbyPeds = new List<Ped>(me.GetNearbyPeds(5));
