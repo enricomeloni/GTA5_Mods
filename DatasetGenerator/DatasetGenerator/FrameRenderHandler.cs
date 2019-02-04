@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +12,7 @@ using DatasetGenerator.BoundingBoxes;
 using DatasetGenerator.PedClassifiers;
 using Rage;
 using Rage.Native;
+using Graphics = System.Drawing.Graphics;
 
 namespace DatasetGenerator
 {
@@ -17,79 +20,67 @@ namespace DatasetGenerator
     {
         public static Camera OldCamera { get; set; }
 
+        public static bool IsRecording { get; set; } = false;
+        private static int FrameID = 1;
+        private static readonly DirectoryInfo DatasetDirectory = new DirectoryInfo("D:/dataset");
+
         public static void BoundingBoxGraphicHandler(object sender, GraphicsEventArgs e)
         {
-            var graphics = e.Graphics;
-            var me = Game.LocalPlayer.Character;
-
-            var nearbyPeds = new List<Ped>(me.GetNearbyPeds(5));
-
-            //nearbyPeds = new List<Ped>();
-            //nearbyPeds.Add(me);
-
-            using (var disposableCamera = new DisposableCamera(DisposableCamera.DefaultScriptedCamera))
+            if (IsRecording)
             {
-                var camera = disposableCamera.Camera;
-                camera.SetCameraValues(Utility.GetGameplayCameraValues());
+                var me = Game.LocalPlayer.Character;
 
-                foreach (var ped in nearbyPeds)
+                var nearbyPeds = new List<Ped>(me.GetNearbyPeds(5));
+
+                //nearbyPeds = new List<Ped>();
+                //nearbyPeds.Add(me);
+
+                //create screen snapshot
+                Size resolution = Game.Resolution;
+                var bitmap = new Bitmap(resolution.Width, resolution.Height, PixelFormat.Format32bppArgb);
+                var graphics = Graphics.FromImage(bitmap);
+                graphics.CopyFromScreen(0, 0, 0, 0, resolution);
+
+                var detectedObjects = new List<DetectedObject>();
+
+                using (var disposableCamera = new DisposableCamera(DisposableCamera.DefaultScriptedCamera))
                 {
-                    var headBox = new HeadBoundingBox(ped);
-                    if (headBox.ShouldDraw(camera))
+                    var camera = disposableCamera.Camera;
+                    camera.SetCameraValues(Utility.GetGameplayCameraValues());
+
+                    foreach (var ped in nearbyPeds)
                     {
-                        
-                        var detectedHead = headBox.ToDetectedObject();
-                        Color color;
-                        switch (detectedHead.ObjectClass)
+                        var headBox = new HeadBoundingBox(ped);
+                        if (headBox.ShouldDraw(camera))
                         {
-                            case ObjectClass.BareHead:
-                                color = Color.Blue;
-                                break;
-                            case ObjectClass.HeadWithHelmet:
-                                color = Color.Red;
-                                break;
-                            case ObjectClass.HeadWithFaceShield:
-                                color = Color.Aqua;
-                                break;
-                            case ObjectClass.HeadWithHearingProtection:
-                                color = Color.BlueViolet;
-                                break;
-                            default:
-                                color = Color.Black;
-                                break;
+                            var detectedHead = headBox.ToDetectedObject();
+                            detectedObjects.Add(detectedHead);
                         }
 
-                        detectedHead.BoundingRect.Draw(graphics, color);
-                    }
-
-                    var chestBox = new ChestBoundingBox(ped);
-                    if (chestBox.ShouldDraw(camera))
-                    {
-                        var detectedChest = chestBox.ToDetectedObject();
-                        
-                        Color color;
-                        if (detectedChest.ObjectClass == ObjectClass.BareChest)
-                            color = Color.Blue;
-                        else
+                        var chestBox = new ChestBoundingBox(ped);
+                        if (chestBox.ShouldDraw(camera))
                         {
-                            color = Color.BlueViolet;
+                            var detectedChest = chestBox.ToDetectedObject();
+                            detectedObjects.Add(detectedChest);
                         }
 
-                        detectedChest.BoundingRect.Draw(graphics, color);
-                    }
-
-                    var weapon = ped.Inventory.EquippedWeaponObject;
-
-                    if (weapon && weapon.IsVisible)
-                    {
-                        var weaponBox = new WeaponBoundingBox(weapon);
-                        if (weaponBox.ShouldDraw(camera))
+                        var weapon = ped.Inventory.EquippedWeaponObject;
+                        if (weapon && weapon.IsVisible)
                         {
-                            var detectedWeapon = weaponBox.ToDetectedObject();
-                            detectedWeapon.BoundingRect.Draw(graphics, Color.Red);
+                            var weaponBox = new WeaponBoundingBox(weapon);
+                            if (weaponBox.ShouldDraw(camera))
+                            {
+                                var detectedWeapon = weaponBox.ToDetectedObject();
+                                detectedObjects.Add(detectedWeapon);
+                            }
                         }
                     }
                 }
+
+
+                var frameMetadata = new FrameMetadata(FrameID, bitmap, detectedObjects);
+                frameMetadata.SaveToFolder(DatasetDirectory);
+                ++FrameID;
             }
         }
     }

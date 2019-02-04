@@ -42,16 +42,14 @@ namespace DatasetGenerator
                 
                 if (keyboardState.PressedKeys.Contains(Keys.F6))
                 {
-                    Size resolution = Game.Resolution;
-                    var bitmap = new Bitmap(resolution.Width, resolution.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                    var graphics = Graphics.FromImage(bitmap);
-                    graphics.CopyFromScreen(0, 0, 0, 0, resolution);
-                    bitmap.Save(@"D:\test.png", ImageFormat.Bmp);
+                    FrameRenderHandler.IsRecording = true;
+                    Game.DisplaySubtitle("Start recording");
                 }
 
                 if (keyboardState.PressedKeys.Contains(Keys.F7))
                 {
-                    Game.DisplaySubtitle(Game.LocalPlayer.Character.Model.Name);
+                    FrameRenderHandler.IsRecording = false;
+                    Game.DisplaySubtitle("Stop recording");
                 }
                 
                 if (Game.IsKeyDown(Keys.F11))
