@@ -28,6 +28,20 @@ namespace DatasetGenerator
             new Vector2(TopLeft.X, BottomRight.Y)
         };
 
+        public float Width => (BottomRight.X - TopLeft.X);
+        public float Height => (TopLeft.Y - BottomRight.Y);
+
+        public Vector2 Center
+        {
+            get
+            {
+                var centerX = (BottomRight.X + TopLeft.X) / 2;
+                var centerY = (BottomRight.Y + TopLeft.Y) / 2;
+
+                return new Vector2(centerX, centerY);
+            }
+        }
+
         public void Draw(Graphics graphics, Color color)
         {
             graphics.DrawLine(Edges[0], Edges[1], color);
