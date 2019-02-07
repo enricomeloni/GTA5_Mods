@@ -39,7 +39,8 @@ namespace DatasetGenerator
                 using (var metadataStreamWriter = new StreamWriter(metadataFileStream, Encoding.UTF8))
                     foreach (var detectedObject in DetectedObjects)
                     {
-                        metadataStreamWriter.WriteLine(detectedObject.ToString());
+                        if(detectedObject.BoundingRect != null)
+                            metadataStreamWriter.WriteLine(detectedObject.ToString());
                     }
             }
         }

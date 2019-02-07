@@ -38,7 +38,7 @@ namespace DatasetGenerator.BoundingBoxes
         /// <summary>
         /// <exception cref="AccessViolationException"> For some unknown reasons, sometimes projecting world position to screen position causes memory access violation. </exception>
         /// </summary>
-        public Vector2[] ProjectedEdges => Edges.Select(edge => ExtensionMethods.ProjectToScreen(edge)).ToArray();
+        public Vector2[] ProjectedEdges => Edges.Select(edge => edge.ProjectToScreen()).ToArray();
 
         protected void Initialize(Vector3 center, Vector3 size, Quaternion orientation, Entity entity)
         {
@@ -108,6 +108,11 @@ namespace DatasetGenerator.BoundingBoxes
             var maxY = ProjectedEdges.Max(edge => edge.Y);
             var minX = ProjectedEdges.Min(edge => edge.X);
             var minY = ProjectedEdges.Min(edge => edge.Y);
+
+            //if one of the points is outside the scree, projected edges will have -1 as coordinate.
+            //so we discard the detected object, at least for now.
+            if (maxX <= 0 || maxY <= 0 || minX <= 0 || minY <= 0)
+                return null;
 
             Vector2 topLeft = new Vector2(minX, maxY);
             Vector2 bottomRight = new Vector2(maxX, minY);
