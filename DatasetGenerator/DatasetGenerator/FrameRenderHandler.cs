@@ -35,11 +35,7 @@ namespace DatasetGenerator
                 //nearbyPeds = new List<Ped>();
                 //nearbyPeds.Add(me);
 
-                //create screen snapshot
-                Size resolution = Game.Resolution;
-                var bitmap = new Bitmap(resolution.Width, resolution.Height, PixelFormat.Format32bppArgb);
-                var graphics = Graphics.FromImage(bitmap);
-                graphics.CopyFromScreen(0, 0, 0, 0, resolution);
+                
 
                 var detectedObjects = new List<DetectedObject>();
 
@@ -77,6 +73,11 @@ namespace DatasetGenerator
                     }
                 }
 
+                //create screen snapshot
+                Size resolution = Game.Resolution;
+                var bitmap = new Bitmap(resolution.Width, resolution.Height, PixelFormat.Format32bppArgb);
+                var graphics = Graphics.FromImage(bitmap);
+                graphics.CopyFromScreen(0, 0, 0, 0, resolution);
 
                 var frameMetadata = new FrameMetadata(FrameID, bitmap, detectedObjects);
                 frameMetadata.SaveToFolder(DatasetDirectory);
