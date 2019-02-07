@@ -16,7 +16,24 @@ namespace DatasetGenerator.BoundingBoxes
         public Vector3 Size { get; private set; }
         public Quaternion Orientation { get; private set; }
 
-        public Vector3[] Edges { get; private set; }
+        private Vector3[] _edges;
+        public Vector3[] Edges
+        {
+            get => _edges;
+            private set
+            {
+                _edges = value;
+                
+                //add occlusion checkpoints
+                OcclusionCheckPoints = ComputeExtendedOcclusionCheckPoints();
+            }
+        }
+
+        /// <summary>
+        /// Provides an extended set of points on which to apply occlusion detection.
+        /// Aside from box edges, it contains other points such as the center of the box and intermediate points.
+        /// </summary>
+        private Vector3[] OcclusionCheckPoints { get; set; }
 
         /// <summary>
         /// <exception cref="AccessViolationException"> For some unknown reasons, sometimes projecting world position to screen position causes memory access violation. </exception>
@@ -63,18 +80,25 @@ namespace DatasetGenerator.BoundingBoxes
 
         public bool ShouldDraw(Camera camera)
         {
+            bool hitEveryTime = true;
             int hitCounter = 0;
 
-            foreach (var edge in Edges)
+            foreach (var edge in OcclusionCheckPoints)
             {
                 var hitResult = World.TraceLine(camera.Position, edge, TraceFlags.IntersectEverything, Entity);
-                if (hitResult.Hit)
+                if (!hitResult.Hit)
                 {
-                    ++hitCounter;
+                    hitEveryTime = false;
+                    break;
+                }
+                else
+                {
+                    hitCounter++;
                 }
             }
-            
-            return hitCounter < HitTreshold;
+
+            Game.DisplaySubtitle("Hit counter is: " + hitCounter);
+            return !hitEveryTime;
         }
 
 
@@ -103,6 +127,22 @@ namespace DatasetGenerator.BoundingBoxes
                     }
                 }
             }
+        }
+
+        private Vector3[] ComputeExtendedOcclusionCheckPoints()
+        {
+            var extendedPoints = new List<Vector3>(_edges) {Center};
+
+            foreach(var edge1 in _edges)
+            {
+                foreach (var edge2 in _edges)
+                {
+                    if(edge1 != edge2)
+                        extendedPoints.Add((edge1 + edge2)/2);
+                }
+            }
+
+            return extendedPoints.ToArray();
         }
 
 
