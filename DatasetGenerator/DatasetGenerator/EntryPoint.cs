@@ -42,13 +42,13 @@ namespace DatasetGenerator
                 
                 if (keyboardState.PressedKeys.Contains(Keys.F6))
                 {
-                    FrameRenderHandler.IsRecording = true;
+                    FrameRenderHandler.StartRecording();
                     Game.DisplaySubtitle("Start recording");
                 }
 
                 if (keyboardState.PressedKeys.Contains(Keys.F7))
                 {
-                    FrameRenderHandler.IsRecording = false;
+                    FrameRenderHandler.StopRecording();
                     Game.DisplaySubtitle("Stop recording");
                 }
                 

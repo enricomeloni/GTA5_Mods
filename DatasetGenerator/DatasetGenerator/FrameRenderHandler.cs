@@ -59,6 +59,23 @@ namespace DatasetGenerator
                             var detectedChest = chestBox.ToDetectedObject();
                             detectedObjects.Add(detectedChest);
                         }
+        public static void StartRecording()
+        {
+            if (!IsRecording)
+            {
+                DatasetDirectory.Empty();
+                IsRecording = true;
+                FrameID = 1;
+            }
+        }
+
+        public static void StopRecording()
+        {
+            if (IsRecording)
+            {
+                IsRecording = false;
+            }
+        }
 
                         var weapon = ped.Inventory.EquippedWeaponObject;
                         if (weapon && weapon.IsVisible)
