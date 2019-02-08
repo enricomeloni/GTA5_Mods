@@ -21,6 +21,7 @@ namespace DatasetGenerator
 {
     public class EntryPoint
     {
+        private static List<Ped> spawnedPeds = new List<Ped>();
         public static void Main()
         {
             Game.DisplaySubtitle("Dataset generator loaded");
