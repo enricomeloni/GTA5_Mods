@@ -54,9 +54,21 @@ namespace DatasetGenerator
                 
                 if (Game.IsKeyDown(Keys.F11))
                 {
-                    Vector3 pedPosition = Game.LocalPlayer.Character.FrontPosition;
+                    var me = Game.LocalPlayer.Character;
+                    Vector3 pedPosition = me.LeftPosition - me.RightVector * 5 + me.ForwardVector * 2;
 
-                    PedSpawner.SpawnNewPed(pedPosition);
+                    var ped = PedSpawner.SpawnNewPed(pedPosition);
+                    ped.Tasks.Wander();
+                    spawnedPeds.Add(ped);
+                }
+
+                if (Game.IsKeyDown(Keys.F12))
+                {
+                    foreach (var spawnedPed in spawnedPeds)
+                    {
+                        spawnedPed.Delete();
+                    }
+                    spawnedPeds.Clear();
                 }
 
                 GameFiber.Yield();

@@ -10,7 +10,7 @@ namespace DatasetGenerator
     {
         private static readonly Random Random = new Random();
         
-        public static void SpawnNewPed(Vector3 pedPosition)
+        public static Ped SpawnNewPed(Vector3 pedPosition)
         {
             var typeIndex = Random.Next(0, PedType.PedTypes.Length);
             var pedType = PedType.PedTypes[typeIndex];
@@ -25,8 +25,7 @@ namespace DatasetGenerator
                 ped.SetPropIndex((PropComponentIds)prop[0], prop[1], prop[2]);
             }
 
-
-            Game.DisplaySubtitle(pedType.GetModel().Name);
+            return ped;
         }
     }
 }
