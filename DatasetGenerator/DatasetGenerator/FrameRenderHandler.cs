@@ -79,26 +79,61 @@ namespace DatasetGenerator
 
                         var weapon = ped.Inventory.EquippedWeaponObject;
                         if (weapon && weapon.IsVisible)
+        public static void DebugGraphicHandler(object sender, GraphicsEventArgs e)
+        {
+            var me = Game.LocalPlayer.Character;
+
+            var nearbyPeds = new List<Ped>(me.GetNearbyPeds(5));
+
+            nearbyPeds = new List<Ped> {me};
+
+            var detectedObjects = new List<DetectedObject>();
+
+            using (var disposableCamera = new DisposableCamera(DisposableCamera.DefaultScriptedCamera))
+            {
+                var camera = disposableCamera.Camera;
+                camera.SetCameraValues(Utility.GetGameplayCameraValues());
+
+                PedBoneId[] bones =
+                {
+                    PedBoneId.Head, PedBoneId.Neck
+                };
+
+                Color[] colors =
+                {
+                    Color.Blue, Color.Red, Color.DarkOrange, Color.BlueViolet, Color.Black, Color.DarkTurquoise
+                };
+
+                for (int i = 0; i < bones.Length; ++i)
+                {
+                    Vector2 boneProjected = me.GetBonePosition(bones[i]).ProjectToScreen();
+                    e.Graphics.DrawCircle(boneProjected, 5f, colors[i]);
+                }
+
+                foreach (var ped in nearbyPeds)
+                {
+                    var headBox = new HeadBoundingBox(ped);
+                    if (headBox.ShouldDraw(camera))
+                    {
+                        headBox.Draw(e.Graphics, Color.Blue);
+                    }
+
+                    var chestBox = new ChestBoundingBox(ped);
+                    if (chestBox.ShouldDraw(camera))
+                    {
+                        //chestBox.Draw(e.Graphics, Color.Red);
+                    }
+
+                    var weapon = ped.Inventory.EquippedWeaponObject;
+                    if (weapon && weapon.IsVisible)
+                    {
+                        var weaponBox = new WeaponBoundingBox(weapon);
+                        if (weaponBox.ShouldDraw(camera))
                         {
-                            var weaponBox = new WeaponBoundingBox(weapon);
-                            if (weaponBox.ShouldDraw(camera))
-                            {
-                                var detectedWeapon = weaponBox.ToDetectedObject();
-                                detectedObjects.Add(detectedWeapon);
-                            }
+                            //weaponBox.Draw(e.Graphics, Color.BlueViolet);
                         }
                     }
                 }
-
-                //create screen snapshot
-                Size resolution = Game.Resolution;
-                var bitmap = new Bitmap(resolution.Width, resolution.Height, PixelFormat.Format32bppArgb);
-                var graphics = Graphics.FromImage(bitmap);
-                graphics.CopyFromScreen(0, 0, 0, 0, resolution);
-
-                var frameMetadata = new FrameMetadata(FrameID, bitmap, detectedObjects);
-                frameMetadata.SaveToFolder(DatasetDirectory);
-                ++FrameID;
             }
         }
     }
