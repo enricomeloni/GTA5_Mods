@@ -29,6 +29,7 @@ namespace DatasetGenerator
             Game.LocalPlayer.IsIgnoredByPolice = true;
 
             Game.FrameRender += FrameRenderHandler.BoundingBoxGraphicHandler;
+            Game.FrameRender += FrameRenderHandler.DebugGraphicHandler;
 
             while (true)
             {

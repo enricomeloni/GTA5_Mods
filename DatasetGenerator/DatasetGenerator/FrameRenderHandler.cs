@@ -134,9 +134,7 @@ namespace DatasetGenerator
         {
             var me = Game.LocalPlayer.Character;
 
-            var nearbyPeds = new List<Ped>(me.GetNearbyPeds(5));
-
-            nearbyPeds = new List<Ped> {me};
+            var nearbyPeds = new List<Ped> {me};
 
             var detectedObjects = new List<DetectedObject>();
 
@@ -147,12 +145,12 @@ namespace DatasetGenerator
 
                 PedBoneId[] bones =
                 {
-                    PedBoneId.Head, PedBoneId.Neck
+                    PedBoneId.Head, PedBoneId.Neck, PedBoneId.Spine2, PedBoneId.Spine3, 
                 };
 
                 Color[] colors =
                 {
-                    Color.Blue, Color.Red, Color.DarkOrange, Color.BlueViolet, Color.Black, Color.DarkTurquoise
+                    Color.Blue, Color.Red, Color.DarkOrange, Color.BlueViolet, Color.DarkTurquoise
                 };
 
                 for (int i = 0; i < bones.Length; ++i)
@@ -166,14 +164,17 @@ namespace DatasetGenerator
                     var headBox = new HeadBoundingBox(ped);
                     if (headBox.ShouldDraw(camera))
                     {
-                        headBox.Draw(e.Graphics, Color.Blue);
+                        //headBox.Draw(e.Graphics, Color.Blue);
                     }
 
                     var chestBox = new ChestBoundingBox(ped);
                     if (chestBox.ShouldDraw(camera))
                     {
-                        //chestBox.Draw(e.Graphics, Color.Red);
+                        chestBox.Draw(e.Graphics, Color.Red);
                     }
+
+                    var pedBox = new PedBoundingBox(ped);
+                    pedBox.Draw(e.Graphics, Color.Blue);
 
                     var weapon = ped.Inventory.EquippedWeaponObject;
                     if (weapon && weapon.IsVisible)
