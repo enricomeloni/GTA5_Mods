@@ -50,6 +50,7 @@ namespace DatasetGenerator
                 if (keyboardState.PressedKeys.Contains(Keys.F7))
                 {
                     FrameRenderHandler.StopRecording();
+                    Game.IsPaused = false;
                     Game.DisplaySubtitle("Stop recording");
                 }
                 
