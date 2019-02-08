@@ -96,8 +96,7 @@ namespace DatasetGenerator.BoundingBoxes
                     hitCounter++;
                 }
             }
-
-            Game.DisplaySubtitle("Hit counter is: " + hitCounter);
+            
             return !hitEveryTime;
         }
 
