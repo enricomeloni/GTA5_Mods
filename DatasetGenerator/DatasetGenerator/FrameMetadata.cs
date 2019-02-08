@@ -14,8 +14,8 @@ namespace DatasetGenerator
     class FrameMetadata
     {
         private int ID;
-        private Bitmap Bitmap;
-        private List<DetectedObject> DetectedObjects;
+        public Bitmap Bitmap { get; set; }
+        public List<DetectedObject> DetectedObjects { get; set; }
 
         public FrameMetadata(int id, Bitmap bitmap, List<DetectedObject> detectedObjects)
         {
