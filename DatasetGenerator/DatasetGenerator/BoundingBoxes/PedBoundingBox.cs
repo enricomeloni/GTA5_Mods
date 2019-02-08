@@ -4,14 +4,20 @@ namespace DatasetGenerator.BoundingBoxes
 {
     class PedBoundingBox : BoundingBox
     {
-        private const float PedScaleFactor = 0.8f;
+        private const float PedScaleFactor = 1.1f;
+        //we use standard human proportions to compute chest dimensions
+        private const float HeightScaleFactor = 180f / 227.4f;
+        private const float WidthScaleFactor = 110f / 196.4f;
+        private const float LengthScaleFactor = 0.8f;
         
         public PedBoundingBox(Ped ped)
         {
             ped.Model.GetDimensions(out var rearBottomLeft, out var frontTopRight);
-            Vector3 size = new Vector3(ped.Width, ped.Length, ped.Height) * PedScaleFactor;
-            Vector3 centerOffset = (frontTopRight + rearBottomLeft) / 2.0f;
-            Vector3 wireboxCenter = ped.Position + centerOffset.Rotate(ped.Orientation);
+            float chestHeight = ped.Height * HeightScaleFactor;
+            float chestWidth = ped.Width * WidthScaleFactor;
+            float chestLength = ped.Length * LengthScaleFactor;
+            Vector3 size = new Vector3(chestWidth, chestLength, chestHeight) * PedScaleFactor;
+            Vector3 wireboxCenter = ped.GetBonePosition(PedBoneId.Pelvis) - 0.075f*ped.UpVector;
 
             Initialize(wireboxCenter, size, ped.Orientation, ped);
         }

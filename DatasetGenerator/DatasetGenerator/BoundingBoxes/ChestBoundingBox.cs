@@ -6,17 +6,18 @@ namespace DatasetGenerator.BoundingBoxes
     
     class ChestBoundingBox : BoundingBox
     {
+
+        //we use standard human proportions to compute chest dimensions
         private const float ChestScaleFactor = 1.1f;
-        private const float HeightScaleFactor = 2.5f / 7.5f;
-        private const float WidthScaleFactor = 0.6f;
+        private const float HeightScaleFactor = 61.77f / 227.4f;
+        private const float WidthScaleFactor = 80f / 196.4f;
         private const float LengthScaleFactor = 0.8f;
         
         public ChestBoundingBox(Ped ped)
         {
 
-            //we use standard human proportions to compute chest dimensions
 
-            Vector3 spineBonePosition = ped.GetBonePosition(PedBoneId.Spine2);
+            Vector3 spineBonePosition = ped.GetBonePosition(PedBoneId.Spine3);
             Quaternion chestOrientation = ped.Orientation;
 
             float chestHeight = ped.Height * HeightScaleFactor;
