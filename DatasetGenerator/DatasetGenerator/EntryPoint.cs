@@ -21,61 +21,12 @@ namespace DatasetGenerator
 {
     public class EntryPoint
     {
-        private static List<Ped> spawnedPeds = new List<Ped>();
+        private static DatasetAnnotator DatasetAnnotator;
         public static void Main()
         {
             Game.DisplaySubtitle("Dataset generator loaded");
-            Game.LocalPlayer.IsIgnoredByEveryone = true;
-            Game.LocalPlayer.IsIgnoredByPolice = true;
 
-            Game.FrameRender += FrameRenderHandler.BoundingBoxGraphicHandler;
-            Game.FrameRender += FrameRenderHandler.DebugGraphicHandler;
-
-            while (true)
-            {
-                Game.LocalPlayer.WantedLevel = 0;
-
-                var keyboardState = Game.GetKeyboardState();
-
-                if (keyboardState.PressedKeys.Contains(Keys.F9))
-                    Game.IsPaused = true;
-                else if (keyboardState.PressedKeys.Contains(Keys.F10))
-                    Game.IsPaused = false;
-                
-                if (keyboardState.PressedKeys.Contains(Keys.F6))
-                {
-                    FrameRenderHandler.StartRecording();
-                    Game.DisplaySubtitle("Start recording");
-                }
-
-                if (keyboardState.PressedKeys.Contains(Keys.F7))
-                {
-                    FrameRenderHandler.StopRecording();
-                    Game.IsPaused = false;
-                    Game.DisplaySubtitle("Stop recording");
-                }
-                
-                if (Game.IsKeyDown(Keys.F11))
-                {
-                    var me = Game.LocalPlayer.Character;
-                    Vector3 pedPosition = me.LeftPosition - me.RightVector * 5 + me.ForwardVector * 2;
-
-                    var ped = PedSpawner.SpawnNewPed(pedPosition);
-                    ped.Tasks.Wander();
-                    spawnedPeds.Add(ped);
-                }
-
-                if (Game.IsKeyDown(Keys.F12))
-                {
-                    foreach (var spawnedPed in spawnedPeds)
-                    {
-                        spawnedPed.Delete();
-                    }
-                    spawnedPeds.Clear();
-                }
-
-                GameFiber.Yield();
-            }
+            DatasetAnnotator = new DatasetAnnotator();
         }
 
 

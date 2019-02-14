@@ -18,15 +18,13 @@ namespace DatasetGenerator
 {
     class FrameRenderHandler
     {
-        public static Camera OldCamera { get; set; }
-
-        public static bool IsRecording { get; set; } = false;
-        private static int FrameID = 1;
-        private static readonly DirectoryInfo DatasetDirectory = new DirectoryInfo("D:/dataset");
+        public bool IsRecording { get; set; } = false;
+        private int FrameID = 1;
+        private readonly DirectoryInfo DatasetDirectory = new DirectoryInfo("D:/dataset");
 
         private static readonly int TicksWithPause = 5;
-        private static int CurrentTick = 0;
-        public static void BoundingBoxGraphicHandler(object sender, GraphicsEventArgs e)
+        private int CurrentTick = 0;
+        public void BoundingBoxGraphicHandler(object sender, GraphicsEventArgs e)
         {
             if (IsRecording)
             {
@@ -112,20 +110,26 @@ namespace DatasetGenerator
             return detectedObjects;
         }
 
-        public static void StartRecording()
+        public void StartRecording()
         {
             if (!IsRecording)
             {
+                //set up the graphic handler
+                Game.FrameRender += BoundingBoxGraphicHandler;
+                //Game.FrameRender += FrameRenderHandler.DebugGraphicHandler;
+
                 DatasetDirectory.Empty();
                 IsRecording = true;
                 FrameID = 1;
             }
         }
 
-        public static void StopRecording()
+        public void StopRecording()
         {
             if (IsRecording)
             {
+                Game.FrameRender -= BoundingBoxGraphicHandler;
+                //Game.FrameRender -= FrameRenderHandler.DebugGraphicHandler;
                 IsRecording = false;
             }
         }
