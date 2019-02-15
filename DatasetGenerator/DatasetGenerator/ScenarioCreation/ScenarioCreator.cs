@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Windows.Forms;
 using Rage;
 using Keys = System.Windows.Forms.Keys;
 
@@ -6,6 +8,8 @@ namespace DatasetGenerator.ScenarioCreation
 {
     public class ScenarioCreator : Component
     {
+        private Scenario Scenario { get; set; } = new Scenario();
+        private readonly DirectoryInfo ScenariosDirectory = new DirectoryInfo("D:/dataset/scenarios");
         protected override void Main()
         {
             while (true)
@@ -32,22 +36,23 @@ namespace DatasetGenerator.ScenarioCreation
         {
             if (Game.IsKeyDown(Keys.O))
             {
-                if (CameraLocked)
-                {
-                    var gameplayCameraValues = Utility.GetGameplayCameraValues();
-                    Camera = new Camera(DisposableCamera.DefaultScriptedCamera, false);
-                    Camera.SetCameraValues(gameplayCameraValues);
-                    Camera.Active = true;
-                }
-                else
-                {
-                    Camera.Delete();
-                    Camera = null;
-                }
-
-                Game.DisplaySubtitle("Camera " + (CameraLocked ? "locked" : "unlocked"));
+                var gameplayCameraValues = Utility.GetGameplayCameraValues();
+                Scenario.CameraSettings.Cameras.Add(gameplayCameraValues);
             }
-            
+
+            if (Game.IsKeyDown(Keys.K))
+            {
+                Game.Console.Print(ScenariosDirectory.FullName);
+                using (var fileStream = File.CreateText(Path.Combine(ScenariosDirectory.FullName, "scenario1.json")))
+                {
+                    fileStream.WriteLine(Scenario.ToJson());
+                }
+            }
+
+            if (Game.IsKeyDown(Keys.J))
+            {
+                Camera.DeleteAllCameras();
+            }
         }
     }
 }
