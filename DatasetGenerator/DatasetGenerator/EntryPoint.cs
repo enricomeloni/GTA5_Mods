@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DatasetGenerator.PedClassifiers;
+using DatasetGenerator.ScenarioCreation;
 using Rage;
 using Rage.Attributes;
 using Rage.Native;
@@ -21,12 +22,21 @@ namespace DatasetGenerator
 {
     public class EntryPoint
     {
-        private static DatasetAnnotator DatasetAnnotator;
+        private static List<Component> Components;
         public static void Main()
         {
             Game.DisplaySubtitle("Dataset generator loaded");
+            var localPlayer = Game.LocalPlayer;
+            localPlayer.Character.IsInvincible = true;
+            localPlayer.IsIgnoredByEveryone = true;
+            localPlayer.IsIgnoredByPolice = true;
 
-            DatasetAnnotator = new DatasetAnnotator();
+            Components = new List<Component>
+            {
+                new DatasetAnnotator(),
+                new ScenarioCreator(),
+                new PlayerFly()
+            };
         }
 
 
