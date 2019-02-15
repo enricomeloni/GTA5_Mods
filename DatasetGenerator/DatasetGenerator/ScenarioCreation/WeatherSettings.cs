@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DatasetGenerator.ScenarioCreator
+namespace DatasetGenerator.ScenarioCreation
 {
     public class WeatherSettings
     {

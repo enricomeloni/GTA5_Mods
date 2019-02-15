@@ -83,13 +83,14 @@
     <Compile Include="PedTypes\PedType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BoundingBoxes\WeaponBoundingBox.cs" />
-    <Compile Include="ScenarioCreator\CameraSettings.cs" />
-    <Compile Include="ScenarioCreator\PedsSettings.cs" />
-    <Compile Include="ScenarioCreator\PlaceSettings.cs" />
-    <Compile Include="ScenarioCreator\Scenario.cs" />
-    <Compile Include="ScenarioCreator\ScenarioCreator.cs" />
-    <Compile Include="ScenarioCreator\TimeSettings.cs" />
-    <Compile Include="ScenarioCreator\WeatherSettings.cs" />
+    <Compile Include="ScenarioCreation\CameraSettings.cs" />
+    <Compile Include="ScenarioCreation\PedsSettings.cs" />
+    <Compile Include="ScenarioCreation\PlaceSettings.cs" />
+    <Compile Include="ScenarioCreation\PlayerFly.cs" />
+    <Compile Include="ScenarioCreation\Scenario.cs" />
+    <Compile Include="ScenarioCreation\ScenarioCreator.cs" />
+    <Compile Include="ScenarioCreation\TimeSettings.cs" />
+    <Compile Include="ScenarioCreation\WeatherSettings.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
