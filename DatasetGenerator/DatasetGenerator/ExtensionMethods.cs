@@ -68,5 +68,17 @@ namespace DatasetGenerator
             foreach (System.IO.FileInfo file in directory.GetFiles()) file.Delete();
             foreach (System.IO.DirectoryInfo subDirectory in directory.GetDirectories()) subDirectory.Delete(true);
         }
+
+        public static void EnableFlying(this Ped ped)
+        {
+            NativeFunction.Natives.SetEntityHasGravity(ped, false);
+            NativeFunction.Natives.SetEntityCollision(ped, false, false);
+        }
+
+        public static void DisableFlying(this Ped ped)
+        {
+            NativeFunction.Natives.SetEntityHasGravity(ped, true);
+            NativeFunction.Natives.SetEntityCollision(ped, true, true);
+        }
     }
 }
