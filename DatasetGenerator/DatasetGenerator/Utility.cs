@@ -12,15 +12,18 @@ namespace DatasetGenerator
     {
         public static CameraValues GetGameplayCameraValues()
         {
-            float pitch = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_PITCH<float>();
-            float heading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
+            var camPosition = NativeFunction.Natives.GetGameplayCamCoord<Vector3>();
+            //argument 2 is rotation order: pitch, roll, yaw
+            Vector3 camRotationVector = NativeFunction.Natives.GetGameplayCamRot<Vector3>(2);
+            var camRotator = new Rotator(camRotationVector.X, camRotationVector.Y, camRotationVector.Z);
 
-            var camPosition = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+            var camFov = NativeFunction.Natives.GetGameplayCamFov<float>();
 
             return new CameraValues
             {
                 Position = camPosition,
-                Rotation = new Rotator(pitch, 0, heading)
+                Rotation = camRotator,
+                Fov = camFov
             };
         }
     }

@@ -28,6 +28,7 @@ namespace DatasetGenerator
         {
             camera.Position = cameraValues.Position;
             camera.Rotation = cameraValues.Rotation;
+            camera.FOV = cameraValues.Fov;
         }
 
         public static void GetPropIndex(this Ped ped, PropComponentIds componentId, out int? drawableId, out int? textureId)
