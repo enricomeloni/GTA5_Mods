@@ -9,22 +9,16 @@ using Rage;
 
 namespace DatasetGenerator
 {
-    class DatasetAnnotator
+    class DatasetAnnotator : Component
     {
 
         private readonly List<Ped> spawnedPeds = new List<Ped>();
         private Camera currentCamera = null;
-
-        public GameFiber GameFiber { get; set; }
         private readonly FrameRenderHandler FrameRenderHandler = new FrameRenderHandler();
 
-        public DatasetAnnotator()
-        {
-            GameFiber = new GameFiber(Main);
-            GameFiber.Start();
-        }
+        
 
-        private void Main()
+        protected override void Main()
         {
             while (true)
             {
@@ -32,26 +26,26 @@ namespace DatasetGenerator
                 Game.LocalPlayer.IsIgnoredByEveryone = true;
                 Game.LocalPlayer.IsIgnoredByPolice = true;
 
-                HandleKeyboardState(Game.GetKeyboardState());
+                HandleKeyboardState();
 
                 GameFiber.Yield();
             }
         }
 
-        private void HandleKeyboardState(KeyboardState keyboardState)
+        protected override void HandleKeyboardState()
         {
-            if (keyboardState.PressedKeys.Contains(Keys.F9))
+            if (Game.IsKeyDown(Keys.F9))
                 Game.IsPaused = true;
-            else if (keyboardState.PressedKeys.Contains(Keys.F10))
+            else if (Game.IsKeyDown(Keys.F10))
                 Game.IsPaused = false;
 
-            if (keyboardState.PressedKeys.Contains(Keys.F6))
+            if (Game.IsKeyDown(Keys.F6))
             {
                 FrameRenderHandler.StartRecording();
                 Game.DisplaySubtitle("Start recording");
             }
 
-            if (keyboardState.PressedKeys.Contains(Keys.F7))
+            if (Game.IsKeyDown(Keys.F7))
             {
                 FrameRenderHandler.StopRecording();
                 Game.IsPaused = false;
