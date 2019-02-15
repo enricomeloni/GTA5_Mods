@@ -9,6 +9,6 @@ namespace DatasetGenerator.ScenarioCreation
 {
     class CameraSettings
     {
-        public List<CameraValues> Cameras { get; set; }
+        public List<CameraValues> Cameras { get; set; } = new List<CameraValues>();
     }
 }
