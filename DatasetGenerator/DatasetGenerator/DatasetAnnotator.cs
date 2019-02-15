@@ -71,33 +71,6 @@ namespace DatasetGenerator
 
                 spawnedPeds.Clear();
             }
-
-            if (Game.IsKeyDown(Keys.K))
-            {
-                if (currentCamera == null)
-                {
-                    var me = Game.LocalPlayer.Character;
-                    Game.DisplaySubtitle("Creating camera?");
-                    var camera = new Camera(DisposableCamera.DefaultScriptedCamera, false);
-                    camera.SetCameraValues(Utility.GetGameplayCameraValues());
-
-                    camera.Position = me.Position;
-                    currentCamera = camera;
-                    currentCamera.Active = true;
-                }
-            }
-
-            if (Game.IsKeyDown(Keys.J))
-            {
-                Game.DisplaySubtitle("Deleting camera?");
-                if (currentCamera != null)
-                {
-                    //currentCamera.Active = false;
-                    currentCamera.Delete();
-                    currentCamera = null;
-                }
-            }
-
         }
     }
 }
