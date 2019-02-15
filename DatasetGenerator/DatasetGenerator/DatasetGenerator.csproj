@@ -67,6 +67,7 @@
     <Compile Include="BoundingBoxes\PedBoundingBox.cs" />
     <Compile Include="FrameMetadata.cs" />
     <Compile Include="FrameRenderHandler.cs" />
+    <Compile Include="Component.cs" />
     <Compile Include="ObjectClass.cs" />
     <Compile Include="PedClassifiers\AirWorkerClassifier.cs" />
     <Compile Include="PedClassifiers\DockWorkerMClassifier.cs" />
