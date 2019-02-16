@@ -94,6 +94,13 @@
     <Compile Include="ScenarioCreation\Forms\CameraFormTemplate.Designer.cs">
       <DependentUpon>CameraFormTemplate.cs</DependentUpon>
     </Compile>
+    <Compile Include="ScenarioCreation\Forms\PedsForm.cs" />
+    <Compile Include="ScenarioCreation\Forms\PedsFormTemplate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScenarioCreation\Forms\PedsFormTemplate.Designer.cs">
+      <DependentUpon>PedsFormTemplate.cs</DependentUpon>
+    </Compile>
     <Compile Include="ScenarioCreation\Forms\ScenarioForm.cs" />
     <Compile Include="ScenarioCreation\Forms\ScenarioFormTemplate.cs">
       <SubType>Form</SubType>
@@ -117,6 +124,9 @@
   <ItemGroup>
     <EmbeddedResource Include="ScenarioCreation\Forms\CameraFormTemplate.resx">
       <DependentUpon>CameraFormTemplate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScenarioCreation\Forms\PedsFormTemplate.resx">
+      <DependentUpon>PedsFormTemplate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ScenarioCreation\Forms\ScenarioFormTemplate.resx">
       <DependentUpon>ScenarioFormTemplate.cs</DependentUpon>
