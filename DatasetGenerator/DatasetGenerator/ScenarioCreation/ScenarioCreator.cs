@@ -72,6 +72,12 @@ namespace DatasetGenerator.ScenarioCreation
                 var gwenForm = new PlaceForm(Scenario);
                 ShowForm(gwenForm);
             }
+
+            if (Game.IsKeyDown(Keys.NumPad4))
+            {
+                var gwenForm = new TimeForm(Scenario);
+                ShowForm(gwenForm);
+            }
         }
 
         private void ShowForm(GwenForm gwenForm)

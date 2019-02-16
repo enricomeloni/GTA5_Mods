@@ -115,6 +115,13 @@
     <Compile Include="ScenarioCreation\Forms\ScenarioFormTemplate.Designer.cs">
       <DependentUpon>ScenarioFormTemplate.cs</DependentUpon>
     </Compile>
+    <Compile Include="ScenarioCreation\Forms\TimeForm.cs" />
+    <Compile Include="ScenarioCreation\Forms\TimeFormTemplate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScenarioCreation\Forms\TimeFormTemplate.Designer.cs">
+      <DependentUpon>TimeFormTemplate.cs</DependentUpon>
+    </Compile>
     <Compile Include="ScenarioCreation\PedsSettings.cs" />
     <Compile Include="ScenarioCreation\PlaceSettings.cs" />
     <Compile Include="ScenarioCreation\PlayerFly.cs" />
@@ -140,6 +147,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ScenarioCreation\Forms\ScenarioFormTemplate.resx">
       <DependentUpon>ScenarioFormTemplate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScenarioCreation\Forms\TimeFormTemplate.resx">
+      <DependentUpon>TimeFormTemplate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
