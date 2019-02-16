@@ -13,7 +13,6 @@ namespace DatasetGenerator
     {
 
         private readonly List<Ped> spawnedPeds = new List<Ped>();
-        private Camera currentCamera = null;
         private readonly FrameRenderHandler FrameRenderHandler = new FrameRenderHandler();
 
         
