@@ -80,5 +80,8 @@ namespace DatasetGenerator
             NativeFunction.Natives.SetEntityHasGravity(ped, true);
             NativeFunction.Natives.SetEntityCollision(ped, true, true);
         }
+
+        public static IEnumerable<(T item, int index)> WithIndex<T>(this IEnumerable<T> self) => 
+            self?.Select((item, index) => (item, index)) ?? new List<(T, int)>();
     }
 }

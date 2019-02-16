@@ -55,6 +55,13 @@ namespace DatasetGenerator.ScenarioCreation
                 var gwenForm = new ScenarioForm(Scenario, ScenariosDirectory);
                 ShowForm(gwenForm);
             }
+            if (Game.IsKeyDown(Keys.NumPad9))
+            {
+                var gwenForm = new CameraForm(Scenario);
+                ShowForm(gwenForm);
+            }
+        }
+
         private void ShowForm(GwenForm gwenForm)
         {
             Game.IsPaused = true;
