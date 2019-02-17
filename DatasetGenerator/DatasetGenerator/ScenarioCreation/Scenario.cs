@@ -2,7 +2,7 @@
 
 namespace DatasetGenerator.ScenarioCreation
 {
-    class Scenario
+    public class Scenario
     {
         public CameraSettings CameraSettings { get; set; } = new CameraSettings();
         public PedsSettings PedsSettings { get; set; } = new PedsSettings();

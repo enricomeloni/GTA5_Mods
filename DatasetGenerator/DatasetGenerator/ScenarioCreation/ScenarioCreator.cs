@@ -13,6 +13,12 @@ namespace DatasetGenerator.ScenarioCreation
     {
         private Scenario Scenario { get; set; } = new Scenario();
         private readonly DirectoryInfo ScenariosDirectory = new DirectoryInfo("D:/scenarios");
+
+        public ScenarioCreator(Scenario scenario)
+        {
+            Scenario = scenario;
+        }
+
         protected override void Main()
         {
             while (true)

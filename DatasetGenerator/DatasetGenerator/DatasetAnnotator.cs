@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DatasetGenerator.ScenarioCreation;
 using Rage;
 
 namespace DatasetGenerator
@@ -14,8 +15,12 @@ namespace DatasetGenerator
 
         private readonly List<Ped> spawnedPeds = new List<Ped>();
         private readonly FrameRenderHandler FrameRenderHandler = new FrameRenderHandler();
+        private Scenario Scenario { get; set; }
 
-        
+        public DatasetAnnotator(Scenario scenario)
+        {
+            Scenario = scenario;
+        }
 
         protected override void Main()
         {
@@ -40,15 +45,12 @@ namespace DatasetGenerator
 
             if (Game.IsKeyDown(Keys.F6))
             {
-                FrameRenderHandler.StartRecording();
-                Game.DisplaySubtitle("Start recording");
+                StartRecording();
             }
 
             if (Game.IsKeyDown(Keys.F7))
             {
-                FrameRenderHandler.StopRecording();
-                Game.IsPaused = false;
-                Game.DisplaySubtitle("Stop recording");
+                StopRecording();
             }
 
             if (Game.IsKeyDown(Keys.F11))
@@ -70,6 +72,23 @@ namespace DatasetGenerator
 
                 spawnedPeds.Clear();
             }
+        }
+
+        private void StopRecording()
+        {
+            FrameRenderHandler.StopRecording();
+            Game.IsPaused = false;
+            Game.DisplaySubtitle("Stop recording");
+        }
+
+        private void StartRecording()
+        {
+            PedSpawner.SpawnPedsFromScenario(Scenario, Game.LocalPlayer.Character.Position);
+
+            Utility.WaitTicks(500);
+
+            FrameRenderHandler.StartRecording();
+            Game.DisplaySubtitle("Start recording");
         }
     }
 }

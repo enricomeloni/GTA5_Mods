@@ -26,5 +26,13 @@ namespace DatasetGenerator
                 Fov = camFov
             };
         }
+
+        public static void WaitTicks(int ticksWithPause)
+        {
+            for (int currentTick = 0; currentTick < ticksWithPause; ++currentTick)
+            {
+                GameFiber.Yield();
+            }
+        }
     }
 }

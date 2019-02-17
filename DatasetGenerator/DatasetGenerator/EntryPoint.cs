@@ -31,10 +31,13 @@ namespace DatasetGenerator
             localPlayer.IsIgnoredByEveryone = true;
             localPlayer.IsIgnoredByPolice = true;
 
+
+            var scenario = new Scenario();
+
             Components = new List<Component>
             {
-                new DatasetAnnotator(),
-                new ScenarioCreator(),
+                new DatasetAnnotator(scenario),
+                new ScenarioCreator(scenario),
                 new PlayerFly()
             };
         }

@@ -46,10 +46,7 @@ namespace DatasetGenerator.ScenarioCreation.Forms
         private void placeComboBox_itemSelected(Base sender, ItemSelectedEventArgs arguments)
         {
             teleportButton.Enable();
+            Scenario.PlaceSettings.Place = (Place) arguments.SelectedItem.UserData;
         }
-
-
-
-
     }
 }
