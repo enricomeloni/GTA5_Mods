@@ -86,7 +86,7 @@ namespace DatasetGenerator
                         WaitTicks(WaitB, false);
                         WaitTicks(WaitA, true);
                     }
-                    catch (RecordingInterruptedException ex)
+                    catch (RecordingInterruptedException)
                     {
                         return;
                     }
