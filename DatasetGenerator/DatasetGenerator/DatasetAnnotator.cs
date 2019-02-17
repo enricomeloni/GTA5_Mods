@@ -23,10 +23,10 @@ namespace DatasetGenerator
 
         private bool IsRecording = false;
 
-        private const int WaitA = 5;
-        private const int WaitB = 5;
+        private const int WaitA = 3;
+        private const int WaitB = 2;
 
-        private int FrameID = 0;
+        private int FrameID = 1;
         private Scenario Scenario { get; set; }
 
         public DatasetAnnotator(Scenario scenario)
@@ -69,35 +69,39 @@ namespace DatasetGenerator
 
         private void AnnotateScreen()
         {
-            if (IsRecording)
+            if (!IsRecording) return;
+            var cameras = Scenario.CameraSettings.Cameras;
+            foreach (var (cameraValue, index) in cameras.WithIndex())
             {
-                var cameras = Scenario.CameraSettings.Cameras;
-                foreach (var (cameraValue, index) in cameras.WithIndex())
+                using (var disposableCamera = new DisposableCamera(DisposableCamera.DefaultScriptedCamera))
                 {
-                    using (var disposableCamera = new DisposableCamera(DisposableCamera.DefaultScriptedCamera))
+                    var camera = disposableCamera.Camera;
+                    var cameraDirectory = new DirectoryInfo(Path.Combine(DatasetDirectory.FullName, $"{index:D3}"));
+                    cameraDirectory.Create();
+
+                    camera.SetCameraValues(cameraValue);
+                    camera.Active = true;
+                    try
                     {
-                        var camera = disposableCamera.Camera;
-                        var cameraDirectory = new DirectoryInfo(Path.Combine(DatasetDirectory.FullName, $"{index:D3}"));
-                        cameraDirectory.Create();
-
-                        camera.SetCameraValues(cameraValue);
-                        camera.Active = true;
-
                         WaitTicks(WaitB, false);
                         WaitTicks(WaitA, true);
-
-                        var detectedObjects = DetectObjects(SpawnedPeds, camera);
-
-                        //create screen snapshot                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
-                        var bitmap = GetBitmapFromScreen();
-
-                        var frameMetadata = new FrameMetadata(FrameID, bitmap, detectedObjects);
-                        frameMetadata.SaveToFolder(cameraDirectory);
                     }
-                }
+                    catch (RecordingInterruptedException ex)
+                    {
+                        return;
+                    }
 
-                ++FrameID;
+                    var detectedObjects = DetectObjects(SpawnedPeds, camera);
+
+                    //create screen snapshot                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                    var bitmap = GetBitmapFromScreen();
+
+                    var frameMetadata = new FrameMetadata(FrameID, bitmap, detectedObjects);
+                    frameMetadata.SaveToFolder(cameraDirectory);
+                }
             }
+
+            ++FrameID;
         }
 
         //order == true, first pause and then unpause;
@@ -105,20 +109,38 @@ namespace DatasetGenerator
         private void WaitTicks(int ticks, bool order)
         {
             Game.IsPaused = order;
-            Utility.WaitTicks(ticks);
+            for (int currentTick = 0; currentTick < ticks; ++currentTick)
+            {
+                var isRecording = IsRecording;
+                HandleKeyboardState();
+                if (isRecording != IsRecording)
+                    throw new RecordingInterruptedException();
+                GameFiber.Yield();
+            }
             Game.IsPaused = !order;
+        }
+
+        private class RecordingInterruptedException : Exception
+        {
         }
 
         private void StopRecording()
         {
             IsRecording = false;
             Game.LocalPlayer.Character.IsVisible = true;
+            foreach (var spawnedPed in SpawnedPeds)
+            {
+                spawnedPed.Delete();
+            }
+            SpawnedPeds = null;
             Game.IsPaused = false;
             Game.DisplaySubtitle("Stop recording");
         }
 
         private void StartRecording()
         {
+            DatasetDirectory.Empty(); 
+            FrameID = 1;
             Game.LocalPlayer.Character.IsVisible = false;
             SpawnedPeds = PedSpawner.SpawnPedsFromScenario(Scenario, Game.LocalPlayer.Character.Position);
             Utility.WaitTicks(500);
