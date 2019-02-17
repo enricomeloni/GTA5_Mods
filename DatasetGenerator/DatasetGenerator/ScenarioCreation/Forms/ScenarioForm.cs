@@ -41,7 +41,7 @@ namespace DatasetGenerator.ScenarioCreation.Forms
             {
                 using (var fileStream = File.OpenText(scenariosPathTextbox.Text))
                 {
-                    Scenario = JsonConvert.DeserializeObject<Scenario>(fileStream.ReadToEnd());
+                    Scenario.FromJson(fileStream.ReadToEnd());
                 }
 
                 confirmationLabel.Text = "Loaded!";

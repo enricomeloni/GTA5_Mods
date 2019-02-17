@@ -34,7 +34,7 @@ namespace DatasetGenerator
 
             return ped;
         }
-        public static void SpawnPedsFromScenario(Scenario scenario, Vector3 spawnPosition)
+        public static Ped[] SpawnPedsFromScenario(Scenario scenario, Vector3 spawnPosition)
         {
             var pedsSettings = scenario.PedsSettings;
 
@@ -91,6 +91,7 @@ namespace DatasetGenerator
                 }
             }
 
+            return spawnedPeds.ToArray();
         }
     }
 }
