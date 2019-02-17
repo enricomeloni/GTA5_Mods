@@ -19,7 +19,6 @@ namespace DatasetGenerator
     {
 
         private Ped[] SpawnedPeds;
-        private FrameRenderHandler FrameRenderHandler;
         private readonly DirectoryInfo DatasetDirectory = new DirectoryInfo("D:/dataset");
 
         private bool IsRecording = false;
