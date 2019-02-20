@@ -56,19 +56,32 @@ namespace DatasetGenerator
             //let the game choose a random variation. Choose random props instead
 
             ped.SetPropIndex((PropComponentIds)component, drawable, texture);
+            //ped.SetVariation(component, drawable, texture);
             SpawnedPed = ped;
         }
 
         [ConsoleCommand]
-        private static void Command_GetDrawableVariations(int component)
+        private static void Command_GetPropDrawableVariations(int component)
         {
             Game.Console.Print(SpawnedPed.GetPropDrawableVariations(component).ToString());
         }
 
         [ConsoleCommand]
-        private static void Command_GetTextureVariations(int component, int drawable)
+        private static void Command_GetPropTextureVariations(int component, int drawable)
         {
             Game.Console.Print(SpawnedPed.GetPropTextureVariations(component, drawable).ToString());
+        }
+
+        [ConsoleCommand]
+        private static void Command_GetDrawableVariations(int component)
+        {
+            Game.Console.Print(SpawnedPed.GetDrawableVariationCount(component).ToString());
+        }
+
+        [ConsoleCommand]
+        private static void Command_GetTextureVariations(int component, int drawable)
+        {
+            Game.Console.Print(SpawnedPed.GetTextureVariationCount(component, drawable).ToString());
         }
     }
 }
