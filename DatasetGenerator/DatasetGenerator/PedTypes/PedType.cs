@@ -15,7 +15,9 @@ namespace DatasetGenerator.PedTypes
         {
             new AirWorker(),
             new DockWorkerM(),
-            new DockWorkerY()
+            new DockWorkerY(),
+            new Construct01(), 
+            new Construct02(), 
         };
 
         public abstract int[] GetVariationComponentChoices();

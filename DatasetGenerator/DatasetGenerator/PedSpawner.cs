@@ -22,18 +22,25 @@ namespace DatasetGenerator
             var typeIndex = Random.Next(0, PedType.PedTypes.Length);
             var pedType = PedType.PedTypes[typeIndex];
 
+            return SpawnPedOfType(pedType, pedPosition);
+        }
+
+        public static Ped SpawnPedOfType(PedType pedType, Vector3 pedPosition)
+        {
             var ped = new Ped(pedType.GetModel(), pedPosition, 0);
 
             //let the game choose a random variation. Choose random props instead
 
-            List<int[]> randomProps = pedType.GetRandomProps();
+            //List<int[]> randomProps = pedType.GetRandomProps();
+            List<int[]> randomProps = new List<int[]> {ped.GetRandomProps()};
             foreach (var prop in randomProps)
             {
-                ped.SetPropIndex((PropComponentIds)prop[0], prop[1], prop[2]);
+                ped.SetPropIndex((PropComponentIds) prop[0], prop[1], prop[2]);
             }
 
             return ped;
         }
+
         public static Ped[] SpawnPedsFromScenario(Scenario scenario, Vector3 spawnPosition)
         {
             var pedsSettings = scenario.PedsSettings;

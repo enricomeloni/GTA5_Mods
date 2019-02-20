@@ -72,6 +72,8 @@
     <Compile Include="Component.cs" />
     <Compile Include="ObjectClass.cs" />
     <Compile Include="PedClassifiers\AirWorkerClassifier.cs" />
+    <Compile Include="PedClassifiers\Construct02Classifier.cs" />
+    <Compile Include="PedClassifiers\Construct01Classifier.cs" />
     <Compile Include="PedClassifiers\DockWorkerMClassifier.cs" />
     <Compile Include="PedClassifiers\DockWorkerYClassifier.cs" />
     <Compile Include="PedClassifiers\PedClassifier.cs" />
@@ -80,6 +82,8 @@
     <Compile Include="PedClassifiers\VariationComponentIds.cs" />
     <Compile Include="PedSpawner.cs" />
     <Compile Include="PedTypes\AirWorker.cs" />
+    <Compile Include="PedTypes\Construct01.cs" />
+    <Compile Include="PedTypes\Construct02.cs" />
     <Compile Include="PedTypes\DockWorkerM.cs" />
     <Compile Include="PedTypes\DockWorkerY.cs" />
     <Compile Include="PedTypes\PedType.cs" />
