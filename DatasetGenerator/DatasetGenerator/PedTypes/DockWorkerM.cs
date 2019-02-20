@@ -24,7 +24,7 @@ namespace DatasetGenerator.PedTypes
         {
             if (componentId == 0)
             {
-                return new[] { -1, 0, 3 };
+                return new[] { -1, 0, 2 };
             }
 
             return new int[] { };
@@ -39,7 +39,7 @@ namespace DatasetGenerator.PedTypes
                     return new[] { 0 };
                 }
 
-                if (drawableId == 3)
+                if (drawableId == 2)
                 {
                     return new[] { 0 };
                 }

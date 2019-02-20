@@ -33,7 +33,7 @@ namespace DatasetGenerator.PedClassifiers
         public override bool HasFaceShield()
         {
             Ped.GetPropIndex(PropComponentIds.Head, out var propIndex, out var _);
-            return propIndex == 3;
+            return propIndex == 2;
         }
     }
 }
