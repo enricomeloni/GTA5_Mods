@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using DatasetGenerator.BoundingBoxes;
 using DatasetGenerator.ScenarioCreation;
 using Rage;
+using Rage.Native;
 using Graphics = Rage.Graphics;
 
 namespace DatasetGenerator
@@ -127,6 +128,8 @@ namespace DatasetGenerator
         private void StopRecording()
         {
             IsRecording = false;
+            NativeFunction.Natives.DisplayHud(true);
+            NativeFunction.Natives.DisplayRadar(true);
             Game.LocalPlayer.Character.IsVisible = true;
             if(SpawnedPeds != null)
             {
@@ -147,6 +150,8 @@ namespace DatasetGenerator
             FrameID = 1;
             Game.LocalPlayer.Character.IsVisible = false;
             SpawnedPeds = PedSpawner.SpawnPedsFromScenario(Scenario, Game.LocalPlayer.Character.Position);
+            NativeFunction.Natives.DisplayHud(false);
+            NativeFunction.Natives.DisplayRadar(false);
             Utility.WaitTicks(500);
             IsRecording = true;
             Game.DisplaySubtitle("Start recording");
