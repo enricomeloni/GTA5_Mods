@@ -128,9 +128,13 @@ namespace DatasetGenerator
         {
             IsRecording = false;
             Game.LocalPlayer.Character.IsVisible = true;
-            foreach (var spawnedPed in SpawnedPeds)
+            if(SpawnedPeds != null)
             {
-                spawnedPed.Delete();
+                foreach (var spawnedPed in SpawnedPeds)
+                {
+                    spawnedPed.Delete();
+                }
+
             }
             SpawnedPeds = null;
             Game.IsPaused = false;
