@@ -10,7 +10,7 @@ namespace DatasetGenerator.PedTypes
 {
     class Construct02 : PedType
     {
-        private static Model Model = new Model("s_m_y_construct_02");
+        private static readonly Model Model = new Model("s_m_y_construct_02");
 
         public override int[] GetVariationComponentChoices()
         {
@@ -44,7 +44,7 @@ namespace DatasetGenerator.PedTypes
 
         public override PedClassifier GetPedClassifier(Ped ped)
         {
-            throw new NotImplementedException();
+            return new Construct02Classifier(ped);
         }
 
         public override Model GetModel()
