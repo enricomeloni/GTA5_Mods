@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DatasetGenerator.PedClassifiers;
+using DatasetGenerator.PedTypes;
 using DatasetGenerator.ScenarioCreation;
 using Rage;
 using Rage.Attributes;
@@ -43,55 +44,31 @@ namespace DatasetGenerator
         }
 
 
+        public static Ped SpawnedPed = null;
         [ConsoleCommand]
-        private static void Command_GetDress(int variation)
+        private static void Command_SpawnPed(int type, int component, int drawable, int texture)
         {
-            Ped ped = Game.LocalPlayer.Character;
+            if(SpawnedPed != null)
+                SpawnedPed.Delete();
+            var pedType = PedType.PedTypes[type];
+            var ped = new Ped(pedType.GetModel(), Game.LocalPlayer.Character.Position + 2f* Game.LocalPlayer.Character.ForwardVector, 0);
 
-            int drawableIndex;
-            int textureIndex;
-            ped.GetVariation(variation, out drawableIndex, out textureIndex);
+            //let the game choose a random variation. Choose random props instead
 
-            Game.Console.Print($"Variation is: {drawableIndex}, {textureIndex}");
+            ped.SetPropIndex((PropComponentIds)component, drawable, texture);
+            SpawnedPed = ped;
         }
 
         [ConsoleCommand]
-        private static void Command_SetDress(int componentId, int drawableIndex, int textureIndex)
+        private static void Command_GetDrawableVariations(int component)
         {
-
-            Ped ped = Game.LocalPlayer.Character;
-            ped.SetVariation(componentId, drawableIndex, textureIndex);
-
-            ped.SetVariation(componentId, drawableIndex, textureIndex);
+            Game.Console.Print(SpawnedPed.GetPropDrawableVariations(component).ToString());
         }
 
         [ConsoleCommand]
-        private static void Command_GetProp(int componentId)
+        private static void Command_GetTextureVariations(int component, int drawable)
         {
-            Ped ped = Game.LocalPlayer.Character;
-            int propIndex = NativeFunction.Natives.GetPedPropIndex<int>(ped, componentId);
-            Game.Console.Print($"Prop attached is: {propIndex}");
+            Game.Console.Print(SpawnedPed.GetPropTextureVariations(component, drawable).ToString());
         }
-
-        [ConsoleCommand]
-        private static void Command_SetProp(int componentId, int drawableId, int textureId)
-        {
-            Ped ped = Game.LocalPlayer.Character;
-            int propIndex = NativeFunction.Natives.SetPedPropIndex<int>(ped, componentId, drawableId, textureId, true);
-        }
-
-        [ConsoleCommand]
-        private static void Command_Project()
-        {
-            float vector_x;
-            float vector_y;
-
-            var vector3 = Game.LocalPlayer.Character.Position;
-
-            NativeFunction.Natives.xF9904D11F1ACBEC3(vector3.X, vector3.Y, vector3.Z, out vector_x, out vector_y);
-
-            Game.DisplaySubtitle($"Projected is ({vector_x},{vector_y})");
-        }
-
     }
 }

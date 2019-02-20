@@ -34,12 +34,23 @@ namespace DatasetGenerator
         public static void GetPropIndex(this Ped ped, PropComponentIds componentId, out int? drawableId, out int? textureId)
         {
             drawableId = NativeFunction.Natives.GetPedPropIndex<int>(ped, (int)componentId);
-            textureId = NativeFunction.Natives.GetPedPropTextureIndex(ped, (int)componentId);
+            textureId = NativeFunction.Natives.GetPedPropTextureIndex<int>(ped, (int)componentId);
         }
 
         public static void SetPropIndex(this Ped ped, PropComponentIds componentId, int drawableId, int textureId)
         {
             NativeFunction.Natives.SetPedPropIndex(ped, (int)componentId, drawableId, textureId, true);
+        }
+
+        public static int GetPropDrawableVariations(this Ped ped, int componentId)
+        {
+            return NativeFunction.Natives.GetNumberOfPedPropDrawableVariations<int>(ped, componentId);
+        }
+
+
+        public static int GetPropTextureVariations(this Ped ped, int componentId, int drawableId)
+        {
+            return NativeFunction.Natives.GetNumberOfPedPropTextureVariations<int>(ped, componentId, drawableId);
         }
 
         public static T RandomElement<T>(this IEnumerable<T> enumerable)
