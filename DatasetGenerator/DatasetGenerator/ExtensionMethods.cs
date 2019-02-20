@@ -53,6 +53,24 @@ namespace DatasetGenerator
             return NativeFunction.Natives.GetNumberOfPedPropTextureVariations<int>(ped, componentId, drawableId);
         }
 
+        public static int[] GetRandomProps(this Ped ped)
+        {
+            var random = new Random();
+
+            var drawables = ped.GetPropDrawableVariations(0);
+            var randomDrawable = random.Next(0, drawables + 1);
+            if(randomDrawable == drawables)
+                return null;
+
+            var textures = ped.GetPropTextureVariations(0, randomDrawable);
+            var randomTexture = random.Next(0, textures);
+
+            return new[]
+            {
+                0, randomDrawable, randomTexture
+            };
+        }
+
         public static T RandomElement<T>(this IEnumerable<T> enumerable)
         {
             Random random = new Random();
