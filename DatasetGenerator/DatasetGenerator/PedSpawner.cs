@@ -5,14 +5,15 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DatasetGenerator
 {
     public abstract class PedSpawner
     {
-        private const float MaxDeviation = 4f;
+        private const float MaxDeviation = 10f;
         private const int TaskDuration = 1000000;
-        private const float WanderRadius = 20f;
+        private const float WanderRadius = 5f;
         private const float WanderMinimalLength = 1f;
         private const float WanderTimeBetweenWalks = 1f;
         private static readonly Random Random = new Random();
@@ -33,7 +34,7 @@ namespace DatasetGenerator
 
             //List<int[]> randomProps = pedType.GetRandomProps();
             List<int[]> randomProps = new List<int[]> {ped.GetRandomProps()};
-            foreach (var prop in randomProps)
+            foreach (var prop in randomProps.Where(prop => prop != null))
             {
                 ped.SetPropIndex((PropComponentIds) prop[0], prop[1], prop[2]);
             }
@@ -49,7 +50,7 @@ namespace DatasetGenerator
 
             for (int i = 0; i < pedsSettings.PedsNumber; ++i)
             {
-                var randomPosition = spawnPosition + Vector3.RandomUnit * (float)Random.NextDouble() * MaxDeviation;
+                var randomPosition = spawnPosition + Vector3.RandomUnit2D * (float)Random.NextDouble() * MaxDeviation;
                 var ped = SpawnNewPed(randomPosition);
                 spawnedPeds.Add(ped);
             }
