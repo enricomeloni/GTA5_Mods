@@ -10,6 +10,11 @@ namespace DatasetGenerator.ScenarioCreation
     public class PlaceSettings
     {
         public Place Place { get; set; }
+
+        public void Apply()
+        {
+            Game.LocalPlayer.Character.Position = Place.Position;
+        }
     }
 
     public class Place

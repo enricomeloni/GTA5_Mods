@@ -19,7 +19,12 @@ namespace DatasetGenerator
     class DatasetAnnotator : Component
     {
 
-        private Ped[] SpawnedPeds;
+        private Ped[] SpawnedPeds
+        {
+            get => Scenario.SpawnedPeds;
+            set => Scenario.SpawnedPeds = value;
+        }
+
         private readonly DirectoryInfo DatasetDirectory = new DirectoryInfo("D:/dataset");
 
         private bool IsRecording = false;
@@ -139,7 +144,6 @@ namespace DatasetGenerator
                 }
 
             }
-            SpawnedPeds = null;
             Game.IsPaused = false;
             Game.DisplaySubtitle("Stop recording");
         }
@@ -149,7 +153,7 @@ namespace DatasetGenerator
             DatasetDirectory.Empty(); 
             FrameID = 1;
             Game.LocalPlayer.Character.IsVisible = false;
-            SpawnedPeds = PedSpawner.SpawnPedsFromScenario(Scenario, Game.LocalPlayer.Character.Position);
+            Scenario.Apply();
             NativeFunction.Natives.DisplayHud(false);
             NativeFunction.Natives.DisplayRadar(false);
             Utility.WaitTicks(500);

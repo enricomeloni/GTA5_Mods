@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Rage;
 
 namespace DatasetGenerator.ScenarioCreation
 {
@@ -8,6 +9,9 @@ namespace DatasetGenerator.ScenarioCreation
         public PedsSettings PedsSettings { get; set; } = new PedsSettings();
         public PlaceSettings PlaceSettings { get; set; } = new PlaceSettings();
         public TimeSettings TimeSettings { get; set; } = new TimeSettings();
+        public WeatherSettings WeatherSettings { get; set; } = new WeatherSettings();
+
+        public Ped[] SpawnedPeds; 
         public string ToJson() => JsonConvert.SerializeObject(this, Formatting.Indented);
         public void FromJson(string jsonSerialization)
         {
@@ -16,6 +20,15 @@ namespace DatasetGenerator.ScenarioCreation
             PedsSettings = loadedScenario.PedsSettings;
             PlaceSettings = loadedScenario.PlaceSettings;
             TimeSettings = loadedScenario.TimeSettings;
+            WeatherSettings = loadedScenario.WeatherSettings;
+        }
+
+        public void Apply()
+        {
+            SpawnedPeds = PedsSettings.Apply();
+            PlaceSettings.Apply();
+            TimeSettings.Apply();
+            WeatherSettings.Apply();
         }
     }
 }

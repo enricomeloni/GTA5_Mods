@@ -39,8 +39,9 @@ namespace DatasetGenerator.ScenarioCreation.Forms
         private void teleportButton_clicked(Base sender, ClickedEventArgs arguments)
         {
             var selectedPlace = (Place)placeComboBox.SelectedItem.UserData;
-            GameFiber.StartNew(delegate { Game.LocalPlayer.Character.Position = selectedPlace.Position; });
-            this.Window.Close();
+            Scenario.PlaceSettings.Place = selectedPlace;
+            GameFiber.StartNew(delegate { Scenario.PlaceSettings.Apply(); });
+            Window.Close();
         }
 
         private void placeComboBox_itemSelected(Base sender, ItemSelectedEventArgs arguments)

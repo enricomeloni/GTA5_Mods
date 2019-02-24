@@ -45,10 +45,8 @@ namespace DatasetGenerator.ScenarioCreation
 
             if (Game.IsKeyDown(Keys.K))
             {
-                using (var fileStream = File.CreateText(Path.Combine(ScenariosDirectory.FullName, "scenario1.json")))
-                {
-                    fileStream.WriteLine(Scenario.ToJson());
-                }
+                var gwenForm = new WeatherForm(Scenario);
+                ShowForm(gwenForm);
             }
 
             if (Game.IsKeyDown(Keys.J))

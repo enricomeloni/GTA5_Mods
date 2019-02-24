@@ -67,10 +67,7 @@ namespace DatasetGenerator.ScenarioCreation.Forms
 
         private void UpdateTime()
         {
-            //var days = World.TimeOfDay.Days;
-            var hour = Scenario.TimeSettings.Hour;
-            var minute = Scenario.TimeSettings.Minute;
-            World.TimeOfDay = new TimeSpan(hour, minute, 0);
+            GameFiber.StartNew(delegate { Scenario.TimeSettings.Apply(); });
         }
     }
 }

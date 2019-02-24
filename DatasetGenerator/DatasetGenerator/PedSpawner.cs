@@ -42,10 +42,8 @@ namespace DatasetGenerator
             return ped;
         }
 
-        public static Ped[] SpawnPedsFromScenario(Scenario scenario, Vector3 spawnPosition)
+        public static Ped[] SpawnPedsFromPedSettings(PedsSettings pedsSettings, Vector3 spawnPosition)
         {
-            var pedsSettings = scenario.PedsSettings;
-
             var spawnedPeds = new List<Ped>();
 
             for (int i = 0; i < pedsSettings.PedsNumber; ++i)

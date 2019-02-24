@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Rage;
 
 namespace DatasetGenerator.ScenarioCreation
 {
@@ -11,6 +12,11 @@ namespace DatasetGenerator.ScenarioCreation
         public int PedsNumber { get; set; }
         public PedBehavior PedBehavior { get; set; }
         public bool PedShouldGroup { get; set; }
+
+        public Ped[] Apply()
+        {
+            return PedSpawner.SpawnPedsFromPedSettings(this, Game.LocalPlayer.Character.Position);
+        }
     }
 
     public enum PedBehavior

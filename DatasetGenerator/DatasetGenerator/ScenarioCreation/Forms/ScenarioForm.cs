@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Gwen.Control;
 using Newtonsoft.Json;
+using Rage;
 using Rage.Forms;
 
 namespace DatasetGenerator.ScenarioCreation.Forms
@@ -42,6 +43,7 @@ namespace DatasetGenerator.ScenarioCreation.Forms
                 using (var fileStream = File.OpenText(scenariosPathTextbox.Text))
                 {
                     Scenario.FromJson(fileStream.ReadToEnd());
+                    //GameFiber.StartNew(delegate { Scenario.Apply(); });
                 }
 
                 confirmationLabel.Text = "Loaded!";

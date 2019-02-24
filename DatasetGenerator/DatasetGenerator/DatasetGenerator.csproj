@@ -125,6 +125,13 @@
     <Compile Include="ScenarioCreation\Forms\TimeFormTemplate.Designer.cs">
       <DependentUpon>TimeFormTemplate.cs</DependentUpon>
     </Compile>
+    <Compile Include="ScenarioCreation\Forms\WeatherForm.cs" />
+    <Compile Include="ScenarioCreation\Forms\WeatherFormTemplate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScenarioCreation\Forms\WeatherFormTemplate.Designer.cs">
+      <DependentUpon>WeatherFormTemplate.cs</DependentUpon>
+    </Compile>
     <Compile Include="ScenarioCreation\PedsSettings.cs" />
     <Compile Include="ScenarioCreation\PlaceSettings.cs" />
     <Compile Include="ScenarioCreation\PlayerFly.cs" />
@@ -153,6 +160,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ScenarioCreation\Forms\TimeFormTemplate.resx">
       <DependentUpon>TimeFormTemplate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScenarioCreation\Forms\WeatherFormTemplate.resx">
+      <DependentUpon>WeatherFormTemplate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
