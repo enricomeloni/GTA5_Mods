@@ -19,8 +19,8 @@ namespace DatasetGenerator.ScenarioCreation
 
     public class Place
     {
-        public string Name { get; set; }
-        public Vector3 Position { get; set; }
+        public string Name { get; set; } = "";
+        public Vector3 Position { get; set; } = Vector3.Zero;
 
         public Place(string name, Vector3 position)
         {

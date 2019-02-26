@@ -25,10 +25,11 @@ namespace DatasetGenerator.ScenarioCreation
 
         public void Apply()
         {
-            SpawnedPeds = PedsSettings.Apply();
             PlaceSettings.Apply();
             TimeSettings.Apply();
             WeatherSettings.Apply();
+
+            SpawnedPeds = PedsSettings.Apply();
         }
     }
 }
