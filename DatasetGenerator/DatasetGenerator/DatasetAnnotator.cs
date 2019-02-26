@@ -29,8 +29,8 @@ namespace DatasetGenerator
 
         private bool IsRecording = false;
 
-        private const int WaitA = 3;
-        private const int WaitB = 2;
+        private const int WaitA = 1;
+        private const int WaitB = 1;
 
         private int FrameID = 1;
         private Scenario Scenario { get; set; }
