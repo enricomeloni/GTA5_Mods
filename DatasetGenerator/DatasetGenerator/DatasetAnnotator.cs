@@ -132,6 +132,8 @@ namespace DatasetGenerator
 
         private void StopRecording()
         {
+            if (!IsRecording)
+                return;
             IsRecording = false;
             NativeFunction.Natives.DisplayHud(true);
             NativeFunction.Natives.DisplayRadar(true);
@@ -150,6 +152,8 @@ namespace DatasetGenerator
 
         private void StartRecording()
         {
+            if (IsRecording)
+                return;
             DatasetDirectory.Empty(); 
             FrameID = 1;
             Game.LocalPlayer.Character.IsVisible = false;
