@@ -172,10 +172,10 @@ namespace DatasetGenerator
 
         private static List<DetectedObject> DetectObjects(IEnumerable<Ped> peds, Camera camera)
         {
-            var detectedObjects = new List<DetectedObject>();
-
-            foreach (var ped in peds)
+            List<DetectedObject> DetectObjectsForPed(Ped ped)
             {
+                List<DetectedObject> detectedObjects = new List<DetectedObject>();
+
                 var headBox = new HeadBoundingBox(ped);
                 if (headBox.ShouldDraw(camera))
                 {
@@ -200,10 +200,15 @@ namespace DatasetGenerator
                         detectedObjects.Add(detectedWeapon);
                     }
                 }
+
+                return detectedObjects;
             }
 
-
-            return detectedObjects;
+            return peds
+                .AsParallel()
+                .Select(DetectObjectsForPed)
+                .SelectMany(objs => objs)
+                .ToList();
         }
     }
 }
