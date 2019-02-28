@@ -85,8 +85,8 @@ namespace DatasetGenerator.ScenarioCreation.Forms
         {
             if (deleteCameraButton.IsDisabled)
                 return;
-            var selectedCameraIndex = camerasListBox.SelectedRowIndex;
-            Scenario.CameraSettings.Cameras.RemoveAt(selectedCameraIndex);
+            var selectedCamera = (CameraValues)camerasListBox.SelectedRow.UserData;
+            Scenario.CameraSettings.Cameras.Remove(selectedCamera);
             UpdateCamerasListBox();
         }
 
