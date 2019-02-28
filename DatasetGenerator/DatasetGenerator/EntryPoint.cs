@@ -17,7 +17,7 @@ using Rage.Native;
 using Graphics = System.Drawing.Graphics;
 
 
-[assembly: Rage.Attributes.Plugin("Dataset Generator", Description = "This plugin is used to generate a dataset for object detection training.", Author = "emeloni")]
+[assembly: Rage.Attributes.Plugin("Dataset Generator", Description = "This plugin is used to generate a dataset for object detection training.", Author = "emeloni", PrefersSingleInstance = true)]
 
 namespace DatasetGenerator
 {
