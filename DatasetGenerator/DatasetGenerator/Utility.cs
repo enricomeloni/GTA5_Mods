@@ -34,5 +34,19 @@ namespace DatasetGenerator
                 GameFiber.Yield();
             }
         }
+
+        private static readonly Random Random = new Random();
+
+        
+
+        public static float Randomize(float value, float deviation = 0.1f)
+        {
+            return value + ((float) (Random.NextDouble() * 2) - 1) * deviation;
+        }
+
+        public static Vector3 Randomize(Vector3 value, float deviation = 5f)
+        {
+            return value + Vector3.RandomUnit2D * (float) Random.NextDouble() * deviation;
+        }
     }
 }
