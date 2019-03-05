@@ -11,6 +11,7 @@ namespace DatasetGenerator.ScenarioCreation
         public TimeSettings TimeSettings { get; set; } = new TimeSettings();
         public WeatherSettings WeatherSettings { get; set; } = new WeatherSettings();
 
+        [JsonIgnore]
         public Ped[] SpawnedPeds; 
         public string ToJson() => JsonConvert.SerializeObject(this, Formatting.Indented);
         public void FromJson(string jsonSerialization)

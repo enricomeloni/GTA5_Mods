@@ -33,6 +33,7 @@ namespace DatasetGenerator
         private const int WaitB = 1;
 
         private int FrameID = 1;
+        private readonly int FramesPerScenario = 900;
         private Scenario Scenario { get; set; }
 
         public DatasetAnnotator(Scenario scenario)
@@ -50,7 +51,10 @@ namespace DatasetGenerator
 
                 HandleKeyboardState();
                 AnnotateScreen();
-                
+
+                if(FrameID >= FramesPerScenario)
+                    StopRecording();
+
                 GameFiber.Yield();
             }
         }
@@ -154,6 +158,9 @@ namespace DatasetGenerator
         {
             if (IsRecording)
                 return;
+
+            World.CleanWorld(true, true, true, true, true, false);
+
             DatasetDirectory.Empty(); 
             FrameID = 1;
             Game.LocalPlayer.Character.IsVisible = false;

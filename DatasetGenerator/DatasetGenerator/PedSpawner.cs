@@ -91,7 +91,7 @@ namespace DatasetGenerator
                         NativeFunction.Natives.TaskChatToPed(
                             spawnedPed, 
                             PickRandomPed(spawnedPed), 
-                            16, 0.0, 0.0, 0.0, 0.0, 0.0);
+                            16, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
                         break;
                     case PedBehavior.Combat:
                         spawnedPed.Tasks.FightAgainst(PickRandomPed(spawnedPed));

@@ -13,7 +13,8 @@ namespace DatasetGenerator.ScenarioCreation
 
         public void Apply()
         {
-            Game.LocalPlayer.Character.Position = Place.Position;
+            if(Place != null)
+                Game.LocalPlayer.Character.Position = Place.Position;
         }
     }
 
@@ -45,7 +46,8 @@ namespace DatasetGenerator.ScenarioCreation
             new Place("MILITARY BASE", new Vector3(-2047.4f, 3132.1f, 32.8f)),
             new Place("MCKENZIE AIRFIELD", new Vector3(2121.7f, 4796.3f, 41.1f)),
             new Place("DESERT AIRFIELD", new Vector3(1747.0f, 3273.7f, 41.1f)),
-            new Place("CHILLIAD", new Vector3(425.4f, 5614.3f, 766.5f))
+            new Place("CHILLIAD", new Vector3(425.4f, 5614.3f, 766.5f)),
+            new Place("SHIPYARD", new Vector3(920.835266f,-3060.08643f, 5.900765f))
         };
     }
 
