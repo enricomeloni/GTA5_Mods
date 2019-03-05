@@ -48,12 +48,13 @@ namespace DatasetGenerator
 
             for (int i = 0; i < pedsSettings.PedsNumber; ++i)
             {
-                var randomPosition = spawnPosition + Vector3.RandomUnit2D * (float)Random.NextDouble() * MaxDeviation;
+                var randomPosition = Utility.Randomize(spawnPosition, MaxDeviation);
+
                 var ped = SpawnNewPed(randomPosition);
                 spawnedPeds.Add(ped);
             }
 
-            foreach (var spawnedPed in spawnedPeds)
+            Ped PickRandomPed(Ped spawnedPed)
             {
                 Ped randomPed;
                 do
@@ -61,6 +62,11 @@ namespace DatasetGenerator
                     randomPed = spawnedPeds.RandomElement();
                 } while (randomPed == spawnedPed);
 
+                return randomPed;
+            }
+
+            foreach (var spawnedPed in spawnedPeds)
+            {
                 switch (pedsSettings.PedBehavior)
                 {
                     case PedBehavior.Stand:
@@ -73,15 +79,22 @@ namespace DatasetGenerator
                         spawnedPed.Tasks.Cower(TaskDuration);
                         break;
                     case PedBehavior.Wander:
-                        NativeFunction.Natives.TaskWanderInArea(spawnedPed, spawnedPed.Position,
-                            WanderRadius, WanderMinimalLength, WanderTimeBetweenWalks);
+                        NativeFunction.Natives.TaskWanderInArea(
+                            spawnedPed, 
+                            spawnedPed.Position,
+                            Utility.Randomize(WanderRadius), 
+                            Utility.Randomize(WanderMinimalLength), 
+                            Utility.Randomize(WanderTimeBetweenWalks));
                         break;
-                    case PedBehavior.Chat:
+                    case PedBehavior.Chat:                        
                         //not clear what these parameters do, in game scripts they are always like this.
-                        NativeFunction.Natives.TaskChatToPed(spawnedPed, randomPed, 16, 0.0, 0.0, 0.0, 0.0, 0.0);
+                        NativeFunction.Natives.TaskChatToPed(
+                            spawnedPed, 
+                            PickRandomPed(spawnedPed), 
+                            16, 0.0, 0.0, 0.0, 0.0, 0.0);
                         break;
                     case PedBehavior.Combat:
-                        spawnedPed.Tasks.FightAgainst(randomPed);
+                        spawnedPed.Tasks.FightAgainst(PickRandomPed(spawnedPed));
                         break;
                     case PedBehavior.Cover:
                         NativeFunction.Natives.TaskStayInCover(spawnedPed);
