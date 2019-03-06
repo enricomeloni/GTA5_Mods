@@ -15,7 +15,7 @@ namespace DatasetGenerator
         private const int TaskDuration = 1000000;
         private const float WanderRadius = 5f;
         private const float WanderMinimalLength = 1f;
-        private const float WanderTimeBetweenWalks = 1f;
+        private const float WanderTimeBetweenWalks = 2f;
         private static readonly Random Random = new Random();
         
         public static Ped SpawnNewPed(Vector3 pedPosition)
@@ -79,18 +79,21 @@ namespace DatasetGenerator
                         spawnedPed.Tasks.Cower(TaskDuration);
                         break;
                     case PedBehavior.Wander:
+                        var wanderRadius = Utility.Randomize(WanderRadius);
+                        var wanderLength = Utility.Randomize(WanderMinimalLength);
+                        var wanderTime = Utility.Randomize(WanderTimeBetweenWalks, 0.8f);
                         NativeFunction.Natives.TaskWanderInArea(
-                            spawnedPed, 
+                            spawnedPed,
                             spawnedPed.Position,
-                            Utility.Randomize(WanderRadius), 
-                            Utility.Randomize(WanderMinimalLength), 
-                            Utility.Randomize(WanderTimeBetweenWalks));
+                            wanderRadius,
+                            wanderLength,
+                            wanderTime);
                         break;
-                    case PedBehavior.Chat:                        
+                    case PedBehavior.Chat:
                         //not clear what these parameters do, in game scripts they are always like this.
                         NativeFunction.Natives.TaskChatToPed(
-                            spawnedPed, 
-                            PickRandomPed(spawnedPed), 
+                            spawnedPed,
+                            PickRandomPed(spawnedPed),
                             16, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
                         break;
                     case PedBehavior.Combat:
