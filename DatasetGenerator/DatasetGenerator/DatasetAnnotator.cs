@@ -175,7 +175,7 @@ namespace DatasetGenerator
         private static Bitmap GetBitmapFromScreen()
         {
             Size resolution = Game.Resolution;
-            var bitmap = new Bitmap(resolution.Width, resolution.Height, PixelFormat.Format32bppArgb);
+            var bitmap = new Bitmap(resolution.Width, resolution.Height, PixelFormat.Format24bppRgb);
             var graphics = System.Drawing.Graphics.FromImage(bitmap);
             graphics.CopyFromScreen(0, 0, 0, 0, resolution);
             return bitmap;
