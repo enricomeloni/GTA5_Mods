@@ -29,8 +29,8 @@ namespace DatasetGenerator
             if(!directory.Exists)
                 directory.Create();
 
-            string imageName = $"{ID:D6}.png";
-            Bitmap.Save(Path.Combine(directory.FullName,imageName), ImageFormat.Png);
+            string imageName = $"{ID:D6}.bmp";
+            Bitmap.Save(Path.Combine(directory.FullName,imageName), ImageFormat.Bmp);
             
             string metadataName = $"{ID:D6}.txt";
             using (var metadataFileStream =

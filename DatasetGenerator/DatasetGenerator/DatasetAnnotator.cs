@@ -31,8 +31,8 @@ namespace DatasetGenerator
 
         private bool IsRecording = false;
 
-        private const int WaitForCam = 1;
-        private const int WaitForGraphics = 1;
+        private const int WaitA = 1;
+        private const int WaitB = 1;
 
         private int FrameID = 1;
         private readonly int FramesPerScenario = 900;
@@ -57,7 +57,7 @@ namespace DatasetGenerator
                 Game.LocalPlayer.IsIgnoredByEveryone = true;
                 Game.LocalPlayer.IsIgnoredByPolice = true;
 
-                HandleKeyboardState();
+                HandleKeyboardState(); 
                 AnnotateScreen();
 
                 if(FrameID >= FramesPerScenario)
@@ -89,12 +89,10 @@ namespace DatasetGenerator
         {
             if (!IsRecording) return;
             var cameras = Scenario.CameraSettings.Cameras;
-            using (var disposableCamera = new DisposableCamera(DisposableCamera.DefaultScriptedCamera))
+            foreach (var (cameraValue, index) in cameras.WithIndex())
             {
-                foreach (var (cameraValue, index) in cameras.WithIndex())
+                using (var disposableCamera = new DisposableCamera(DisposableCamera.DefaultScriptedCamera))
                 {
-                    Game.IsPaused = true;
-                
                     var camera = disposableCamera.Camera;
                     var cameraDirectory = new DirectoryInfo(Path.Combine(CurrentDatasetSession.FullName, $"{index:D3}"));
                     if(!cameraDirectory.Exists)
@@ -104,7 +102,8 @@ namespace DatasetGenerator
                     camera.Active = true;
                     try
                     {
-                        WaitTicks(WaitForGraphics);
+                        WaitTicks(WaitB, false);
+                        WaitTicks(WaitA, true);
                     }
                     catch (RecordingInterruptedException)
                     {
@@ -118,9 +117,6 @@ namespace DatasetGenerator
 
                     var frameMetadata = new FrameMetadata(FrameID, bitmap, detectedObjects);
                     frameMetadata.SaveToFolder(cameraDirectory);
-
-                    Game.IsPaused = false;
-                    WaitTicks(WaitForCam);
                 }
             }
 
@@ -129,8 +125,9 @@ namespace DatasetGenerator
 
         //order == true, first pause and then unpause;
         //order == false; first unpause and then pause;
-        private void WaitTicks(int ticks)
+        private void WaitTicks(int ticks, bool order)
         {
+            Game.IsPaused = order;
             for (int currentTick = 0; currentTick < ticks; ++currentTick)
             {
                 var isRecording = IsRecording;
@@ -139,6 +136,7 @@ namespace DatasetGenerator
                     throw new RecordingInterruptedException();
                 GameFiber.Yield();
             }
+            Game.IsPaused = !order;
         }
 
         private class RecordingInterruptedException : Exception
@@ -233,7 +231,6 @@ namespace DatasetGenerator
             }
 
             return peds
-                .AsParallel()
                 .Select(DetectObjectsForPed)
                 .SelectMany(objs => objs)
                 .ToList();
