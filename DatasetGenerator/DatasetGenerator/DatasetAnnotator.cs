@@ -25,12 +25,14 @@ namespace DatasetGenerator
             set => Scenario.SpawnedPeds = value;
         }
 
-        private readonly DirectoryInfo DatasetDirectory = new DirectoryInfo("D:/dataset");
+        public static readonly DirectoryInfo RootDatasetDirectory = new DirectoryInfo("G:/dataset");
+        public static readonly DirectoryInfo RootScenariosDirectory = new DirectoryInfo("G:/scenarios");
+        private DirectoryInfo CurrentDatasetSession;
 
         private bool IsRecording = false;
 
-        private const int WaitA = 1;
-        private const int WaitB = 1;
+        private const int WaitForCam = 1;
+        private const int WaitForGraphics = 1;
 
         private int FrameID = 1;
         private readonly int FramesPerScenario = 900;
@@ -39,6 +41,12 @@ namespace DatasetGenerator
         public DatasetAnnotator(Scenario scenario)
         {
             Scenario = scenario;
+            var scenario3Path = Path.Combine(RootScenariosDirectory.FullName, "scen3.json");
+            using (var fileStream = File.OpenText(scenario3Path))
+            {
+                Scenario.FromJson(fileStream.ReadToEnd());
+            }
+
         }
 
         protected override void Main()
@@ -81,20 +89,22 @@ namespace DatasetGenerator
         {
             if (!IsRecording) return;
             var cameras = Scenario.CameraSettings.Cameras;
-            foreach (var (cameraValue, index) in cameras.WithIndex())
+            using (var disposableCamera = new DisposableCamera(DisposableCamera.DefaultScriptedCamera))
             {
-                using (var disposableCamera = new DisposableCamera(DisposableCamera.DefaultScriptedCamera))
+                foreach (var (cameraValue, index) in cameras.WithIndex())
                 {
+                    Game.IsPaused = true;
+                
                     var camera = disposableCamera.Camera;
-                    var cameraDirectory = new DirectoryInfo(Path.Combine(DatasetDirectory.FullName, $"{index:D3}"));
-                    cameraDirectory.Create();
+                    var cameraDirectory = new DirectoryInfo(Path.Combine(CurrentDatasetSession.FullName, $"{index:D3}"));
+                    if(!cameraDirectory.Exists)
+                        cameraDirectory.Create();
 
                     camera.SetCameraValues(cameraValue);
                     camera.Active = true;
                     try
                     {
-                        WaitTicks(WaitB, false);
-                        WaitTicks(WaitA, true);
+                        WaitTicks(WaitForGraphics);
                     }
                     catch (RecordingInterruptedException)
                     {
@@ -108,6 +118,9 @@ namespace DatasetGenerator
 
                     var frameMetadata = new FrameMetadata(FrameID, bitmap, detectedObjects);
                     frameMetadata.SaveToFolder(cameraDirectory);
+
+                    Game.IsPaused = false;
+                    WaitTicks(WaitForCam);
                 }
             }
 
@@ -116,9 +129,8 @@ namespace DatasetGenerator
 
         //order == true, first pause and then unpause;
         //order == false; first unpause and then pause;
-        private void WaitTicks(int ticks, bool order)
+        private void WaitTicks(int ticks)
         {
-            Game.IsPaused = order;
             for (int currentTick = 0; currentTick < ticks; ++currentTick)
             {
                 var isRecording = IsRecording;
@@ -127,7 +139,6 @@ namespace DatasetGenerator
                     throw new RecordingInterruptedException();
                 GameFiber.Yield();
             }
-            Game.IsPaused = !order;
         }
 
         private class RecordingInterruptedException : Exception
@@ -159,9 +170,16 @@ namespace DatasetGenerator
             if (IsRecording)
                 return;
 
+            Game.DisplaySubtitle("Start recording");
+
             World.CleanWorld(true, true, true, true, true, false);
 
-            DatasetDirectory.Empty(); 
+            //DatasetDirectory.Empty(); 
+            
+            var dateString = $"{DateTime.Now:dd_MM_yy_HH_mm_ss}";
+            
+            CurrentDatasetSession = new DirectoryInfo(Path.Combine(RootDatasetDirectory.FullName, dateString));
+
             FrameID = 1;
             Game.LocalPlayer.Character.IsVisible = false;
             Scenario.Apply();
@@ -169,7 +187,6 @@ namespace DatasetGenerator
             NativeFunction.Natives.DisplayRadar(false);
             Utility.WaitTicks(500);
             IsRecording = true;
-            Game.DisplaySubtitle("Start recording");
         }
 
         private static Bitmap GetBitmapFromScreen()

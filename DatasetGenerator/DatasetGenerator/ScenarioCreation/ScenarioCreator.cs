@@ -12,7 +12,6 @@ namespace DatasetGenerator.ScenarioCreation
     public class ScenarioCreator : Component
     {
         private Scenario Scenario { get; set; } = new Scenario();
-        private readonly DirectoryInfo ScenariosDirectory = new DirectoryInfo("D:/scenarios");
 
         public ScenarioCreator(Scenario scenario)
         {
@@ -56,7 +55,7 @@ namespace DatasetGenerator.ScenarioCreation
 
             if (Game.IsKeyDown(Keys.NumPad7))
             {
-                var gwenForm = new ScenarioForm(Scenario, ScenariosDirectory);
+                var gwenForm = new ScenarioForm(Scenario, DatasetAnnotator.RootScenariosDirectory);
                 ShowForm(gwenForm);
             }
             if (Game.IsKeyDown(Keys.NumPad9))
