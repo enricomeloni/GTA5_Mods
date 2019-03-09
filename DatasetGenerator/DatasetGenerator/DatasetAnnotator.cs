@@ -31,8 +31,8 @@ namespace DatasetGenerator
 
         private bool IsRecording = false;
 
-        private const int WaitA = 1;
-        private const int WaitB = 1;
+        private const int WaitA = 4;
+        private const int WaitB = 4;
 
         private int FrameID = 1;
         private readonly int FramesPerScenario = 900;
@@ -60,7 +60,7 @@ namespace DatasetGenerator
                 HandleKeyboardState(); 
                 AnnotateScreen();
 
-                if(FrameID >= FramesPerScenario)
+                if(FrameID >= FramesPerScenario + 1)
                     StopRecording();
 
                 GameFiber.Yield();
