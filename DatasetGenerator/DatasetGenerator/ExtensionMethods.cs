@@ -58,7 +58,7 @@ namespace DatasetGenerator
             var random = new Random();
 
             var drawables = ped.GetPropDrawableVariations(0);
-            var randomDrawable = random.Next(0, drawables + 1);
+            var randomDrawable = random.Next(0, drawables + 2);
             if(randomDrawable == drawables)
                 return null;
 
