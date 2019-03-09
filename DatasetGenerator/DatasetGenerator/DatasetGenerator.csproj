@@ -70,6 +70,7 @@
     <Compile Include="BoundingBoxes\PedBoundingBox.cs" />
     <Compile Include="FrameMetadata.cs" />
     <Compile Include="Component.cs" />
+    <Compile Include="Logging\Logger.cs" />
     <Compile Include="ObjectClass.cs" />
     <Compile Include="PedClassifiers\AirWorkerClassifier.cs" />
     <Compile Include="PedClassifiers\Construct02Classifier.cs" />
