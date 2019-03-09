@@ -4,15 +4,11 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using DatasetGenerator.BoundingBoxes;
 using DatasetGenerator.ScenarioCreation;
 using Rage;
 using Rage.Native;
-using Graphics = Rage.Graphics;
 
 namespace DatasetGenerator
 {

@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Runtime.ExceptionServices;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Collections.Generic;
+using DatasetGenerator.Logging;
 using DatasetGenerator.PedClassifiers;
 using DatasetGenerator.PedTypes;
 using DatasetGenerator.ScenarioCreation;
 using Rage;
 using Rage.Attributes;
-using Rage.Native;
-using Graphics = System.Drawing.Graphics;
 
 
 [assembly: Rage.Attributes.Plugin("Dataset Generator", Description = "This plugin is used to generate a dataset for object detection training.", Author = "emeloni", PrefersSingleInstance = true)]
@@ -24,14 +14,16 @@ namespace DatasetGenerator
     public class EntryPoint
     {
         private static List<Component> Components;
+
+
         public static void Main()
         {
+
             Game.DisplaySubtitle("Dataset generator loaded");
             var localPlayer = Game.LocalPlayer;
             localPlayer.Character.IsInvincible = true;
             localPlayer.IsIgnoredByEveryone = true;
             localPlayer.IsIgnoredByPolice = true;
-
 
             var scenario = new Scenario();
 

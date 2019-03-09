@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Rage;
-using Graphics = System.Drawing.Graphics;
 
 namespace DatasetGenerator
 {
@@ -33,6 +28,7 @@ namespace DatasetGenerator
             Bitmap.Save(Path.Combine(directory.FullName,imageName), ImageFormat.Bmp);
             
             string metadataName = $"{ID:D6}.txt";
+
             using (var metadataFileStream =
                 new FileStream(Path.Combine(directory.FullName, metadataName), FileMode.CreateNew))
             {

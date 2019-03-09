@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Gwen.Control;
-using Newtonsoft.Json;
-using Rage;
 using Rage.Forms;
 
 namespace DatasetGenerator.ScenarioCreation.Forms

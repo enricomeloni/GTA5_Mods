@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Gwen.Control;
-using Rage;
 using Rage.Forms;
 
 namespace DatasetGenerator.ScenarioCreation.Forms

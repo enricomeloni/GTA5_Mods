@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq.Expressions;
-using System.Windows.Forms;
-using DatasetGenerator.ScenarioCreation.Forms;
+﻿using DatasetGenerator.ScenarioCreation.Forms;
 using Rage;
 using Rage.Forms;
 using Keys = System.Windows.Forms.Keys;
