@@ -39,7 +39,7 @@ namespace DatasetGenerator.ScenarioCreation.Forms
                 PrintPositionToTextBoxes(Scenario.PlaceSettings.Place.Position);
             }
 
-            teleportButton.Disable();
+            //teleportButton.Disable();
 
             positionXtextBox.Disable();
             positionYtextBox.Disable();

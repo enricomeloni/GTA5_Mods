@@ -6,6 +6,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DatasetGenerator.Logging;
 
 namespace DatasetGenerator
 {
@@ -17,6 +18,8 @@ namespace DatasetGenerator
         private const float WanderMinimalLength = 1f;
         private const float WanderTimeBetweenWalks = 2f;
         private static readonly Random Random = new Random();
+
+        private static readonly Logger Log = Logger.GetLogger(typeof(PedSpawner));
         
         public static Ped SpawnNewPed(Vector3 pedPosition)
         {
@@ -30,12 +33,26 @@ namespace DatasetGenerator
         {
             var ped = new Ped(pedType.GetModel(), pedPosition, 0);
 
+            Log.Debug($"Spawned ped of type {pedType.TypeName} with model {pedType.GetModel().Name}");
+
             //let the game choose a random variation. Choose random props instead
 
             //List<int[]> randomProps = pedType.GetRandomProps();
             List<int[]> randomProps = new List<int[]> {ped.GetRandomProps()};
-            foreach (var prop in randomProps.Where(prop => prop != null))
+
+            foreach (var prop in randomProps/*.Where(prop => prop != null)*/)
             {
+                if (prop == null)
+                {
+                    Log.Debug("No props for this ped");
+                    continue;
+                }
+                else
+                {
+                    Log.Debug("Setting random props for ped: " +
+                              string.Join(",", prop));
+                }
+
                 ped.SetPropIndex((PropComponentIds) prop[0], prop[1], prop[2]);
             }
 

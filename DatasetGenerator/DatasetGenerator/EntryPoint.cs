@@ -14,12 +14,14 @@ namespace DatasetGenerator
     public class EntryPoint
     {
         private static List<Component> Components;
+        private static readonly Logger Log = Logger.GetLogger(typeof(EntryPoint));
+
 
 
         public static void Main()
         {
-
-            Game.DisplaySubtitle("Dataset generator loaded");
+            Log.Info("-----------------------------------------------------");
+            Log.Info("Loaded Dataset Generator");
             var localPlayer = Game.LocalPlayer;
             localPlayer.Character.IsInvincible = true;
             localPlayer.IsIgnoredByEveryone = true;

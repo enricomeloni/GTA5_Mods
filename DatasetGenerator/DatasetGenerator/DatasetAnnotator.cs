@@ -21,14 +21,14 @@ namespace DatasetGenerator
             set => Scenario.SpawnedPeds = value;
         }
 
-        public static readonly DirectoryInfo RootDatasetDirectory = new DirectoryInfo("G:/dataset");
+        public static readonly DirectoryInfo RootDatasetDirectory = new DirectoryInfo("D:/dataset");
         public static readonly DirectoryInfo RootScenariosDirectory = new DirectoryInfo("G:/scenarios");
         private DirectoryInfo CurrentDatasetSession;
 
         private bool IsRecording = false;
 
-        private const int WaitA = 4;
-        private const int WaitB = 4;
+        private const int WaitA = 1;
+        private const int WaitB = 3;
 
         private int FrameID = 1;
         private readonly int FramesPerScenario = 900;
@@ -98,8 +98,8 @@ namespace DatasetGenerator
                     camera.Active = true;
                     try
                     {
-                        WaitTicks(WaitB, false);
-                        WaitTicks(WaitA, true);
+                        WaitTicks(WaitA, false);
+                        WaitTicks(WaitB, true);
                     }
                     catch (RecordingInterruptedException)
                     {
@@ -119,11 +119,11 @@ namespace DatasetGenerator
             ++FrameID;
         }
 
-        //order == true, first pause and then unpause;
-        //order == false; first unpause and then pause;
-        private void WaitTicks(int ticks, bool order)
+        //paused == true, first pause and then unpause;
+        //paused == false; first unpause and then pause;
+        private void WaitTicks(int ticks, bool paused)
         {
-            Game.IsPaused = order;
+            Game.IsPaused = paused;
             for (int currentTick = 0; currentTick < ticks; ++currentTick)
             {
                 var isRecording = IsRecording;
@@ -132,7 +132,7 @@ namespace DatasetGenerator
                     throw new RecordingInterruptedException();
                 GameFiber.Yield();
             }
-            Game.IsPaused = !order;
+            Game.IsPaused = !paused;
         }
 
         private class RecordingInterruptedException : Exception

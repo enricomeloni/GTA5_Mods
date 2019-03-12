@@ -55,5 +55,7 @@ namespace DatasetGenerator.PedTypes
 
             return null;
         }
+
+        public string TypeName => GetType().Name;
     }
 }
