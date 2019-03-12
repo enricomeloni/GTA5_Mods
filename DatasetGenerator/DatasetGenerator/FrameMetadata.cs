@@ -24,20 +24,24 @@ namespace DatasetGenerator
             if(!directory.Exists)
                 directory.Create();
 
-            string imageName = $"{ID:D6}.bmp";
-            Bitmap.Save(Path.Combine(directory.FullName,imageName), ImageFormat.Bmp);
+            string imageName = $"{ID:D6}.png";
+            Bitmap.Save(Path.Combine(directory.FullName,imageName), ImageFormat.Png);
             
             string metadataName = $"{ID:D6}.txt";
 
             using (var metadataFileStream =
                 new FileStream(Path.Combine(directory.FullName, metadataName), FileMode.CreateNew))
             {
-                using (var metadataStreamWriter = new StreamWriter(metadataFileStream, Encoding.UTF8))
+                var encoding = new UTF8Encoding(false);
+                using (var metadataStreamWriter = new StreamWriter(metadataFileStream, encoding))
+                {
+                    metadataStreamWriter.NewLine = "\n";
                     foreach (var detectedObject in DetectedObjects)
                     {
-                        if(detectedObject.BoundingRect != null)
+                        if (detectedObject.BoundingRect != null)
                             metadataStreamWriter.WriteLine(detectedObject.ToString());
                     }
+                }
             }
         }
     }
