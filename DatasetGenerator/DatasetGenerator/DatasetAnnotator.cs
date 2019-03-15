@@ -212,6 +212,14 @@ namespace DatasetGenerator
                     detectedObjects.Add(detectedChest);
                 }
 
+                var pedBox = new PedBoundingBox(ped);
+
+                if (pedBox.ShouldDraw(camera))
+                {
+                    var detectedPed = pedBox.ToDetectedObject();
+                    detectedObjects.Add(detectedPed);
+                }
+
                 var weapon = ped.Inventory.EquippedWeaponObject;
                 if (weapon && weapon.IsVisible)
                 {
