@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Drawing;
 using System.Linq;
 using Rage;
@@ -103,15 +104,38 @@ namespace DatasetGenerator.BoundingBoxes
 
         protected BoundingRect ToBoundingRect()
         {
-            var maxX = ProjectedEdges.Max(edge => edge.X);
-            var maxY = ProjectedEdges.Max(edge => edge.Y);
-            var minX = ProjectedEdges.Min(edge => edge.X);
-            var minY = ProjectedEdges.Min(edge => edge.Y);
 
-            //if one of the points is outside the scree, projected edges will have -1 as coordinate.
-            //so we discard the detected object, at least for now.
-            if (maxX <= 0 || maxY <= 0 || minX <= 0 || minY <= 0)
+            Size resolution = Game.Resolution;
+            var center2D = Center.ProjectToScreen();
+
+            if (center2D.X < 0 || center2D.Y < 0)
                 return null;
+
+            var maxX = ProjectedEdges
+                .Select(edge => edge.X)
+                .Where(val => val >= 0 && val > center2D.X)
+                .DefaultIfEmpty(resolution.Width)
+                .Max();
+            var maxY = ProjectedEdges
+                .Select(edge => edge.Y)
+                .Where(val => val >= 0 && val > center2D.Y)
+                .DefaultIfEmpty(resolution.Height)
+                .Max();
+            var minX = ProjectedEdges
+                .Select(edge => edge.X)
+                .Where(val => val >= 0 && val < center2D.X)
+                .DefaultIfEmpty(0)
+                .Min();
+            var minY = ProjectedEdges
+                .Select(edge => edge.Y)
+                .Where(val => val >= 0 && val < center2D.Y)
+                .DefaultIfEmpty(0)
+                .Min();
+
+
+
+            //Game.DisplaySubtitle($"maxX: {maxX:F0}, minX: {minX:F0}, maxY: {maxY:F0}, minY: {minY:F0}");
+
 
             Vector2 topLeft = new Vector2(minX, maxY);
             Vector2 bottomRight = new Vector2(maxX, minY);
