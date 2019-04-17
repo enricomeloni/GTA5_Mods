@@ -12,6 +12,7 @@ namespace DatasetGenerator.ScenarioCreation.Forms
         private TextBox scenariosPathTextbox;
         private Button saveScenarioButton;
         private Button loadScenarioButton;
+        private Button clearButton;
         private Label scenariosPathLabel;
         private Label confirmationLabel;
 
@@ -56,6 +57,13 @@ namespace DatasetGenerator.ScenarioCreation.Forms
 
             saveScenarioButton.Clicked += saveScenarioButton_click;
             loadScenarioButton.Clicked += loadScenarioButton_click;
+            clearButton.Clicked += clearButton_click;
+        }
+
+        private void clearButton_click(Base sender, ClickedEventArgs arguments)
+        {
+            Scenario.Clear();
+            confirmationLabel.Text = "Cleared";
         }
     }
 }

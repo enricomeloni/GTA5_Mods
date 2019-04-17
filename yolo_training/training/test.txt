@@ -1,0 +1,10 @@
+/home/enrico/hdd/MOT17/train_coco/MOT17-13/img1/000122.jpg
+/home/enrico/hdd/MOT17/train_coco/MOT17-13/img1/000746.jpg
+/home/enrico/hdd/MOT17/train_coco/MOT17-13/img1/000218.jpg
+/home/enrico/hdd/MOT17/train_coco/MOT17-13/img1/000620.jpg
+/home/enrico/hdd/MOT17/train_coco/MOT17-13/img1/000702.jpg
+/home/enrico/hdd/MOT17/train_coco/MOT17-13/img1/000598.jpg
+/home/enrico/hdd/MOT17/train_coco/MOT17-13/img1/000355.jpg
+/home/enrico/hdd/MOT17/train_coco/MOT17-13/img1/000187.jpg
+/home/enrico/hdd/MOT17/train_coco/MOT17-13/img1/000079.jpg
+/home/enrico/hdd/MOT17/train_coco/MOT17-13/img1/000311.jpg

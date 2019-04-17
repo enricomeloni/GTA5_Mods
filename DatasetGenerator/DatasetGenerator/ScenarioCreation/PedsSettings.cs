@@ -12,6 +12,13 @@ namespace DatasetGenerator.ScenarioCreation
         {
             return PedSpawner.SpawnPedsFromPedSettings(this, Game.LocalPlayer.Character.Position);
         }
+
+        public void Clear()
+        {
+            PedsNumber = 0;
+            PedBehavior = 0;
+            PedShouldGroup = false;
+        }
     }
 
     public enum PedBehavior

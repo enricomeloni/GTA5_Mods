@@ -6,7 +6,7 @@ namespace DatasetGenerator.Logging
 {
     class Logger
     {
-        public static readonly FileInfo LogFile = new FileInfo("G:/gta.log");
+        public static readonly FileInfo LogFile = new FileInfo("F:/gta.log");
 
         public string ClassName { get; private set; }
 

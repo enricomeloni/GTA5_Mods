@@ -12,6 +12,11 @@ namespace DatasetGenerator.ScenarioCreation
             if(Place != null)
                 Game.LocalPlayer.Character.Position = Place.Position;
         }
+
+        public void Clear()
+        {
+            Place = null;
+        }
     }
 
     public class Place

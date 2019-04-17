@@ -8,8 +8,8 @@
         HeadWithHearingProtection,
         BareChest,
         ChestWithHighVisibilityVest,
+        WholePerson,
         FiringWeapon,
-        MeleeWeapon,
-        WholePerson
+        MeleeWeapon
     }
 }

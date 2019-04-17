@@ -12,5 +12,11 @@ namespace DatasetGenerator.ScenarioCreation
         {
             World.TimeOfDay = new TimeSpan(Hour, Minute, 0);
         }
+
+        public void Clear()
+        {
+            Hour = 0;
+            Minute = 0;
+        }
     }
 }

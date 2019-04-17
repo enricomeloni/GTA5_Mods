@@ -12,65 +12,33 @@ namespace DatasetGenerator.PedTypes
             return Model;
         }
 
-        public override int[] GetPropComponentChoices()
+        public override int[] GetHelmetProps()
         {
-            return new[] {0};
+            return null;
         }
 
-        public override int[] GetPropDrawableChoices(int componentId)
+        public override int[] GetFaceShieldProps()
         {
-            if (componentId == 0)
-            {
-                return new[] { -1, 1 };
-            }
-
-            return new int[] { };
+            return null;
         }
 
-        public override int[] GetPropTextureChoices(int componentId, int drawableId)
+        public override int[] GetHearingProtectionProps()
         {
-            if (componentId == 0)
-            {
-                if (drawableId == 1)
-                {
-                    return new[] {0, 1};
-                }
-            }
-
-            return new int[] {};
+            return new[] {(int) PropComponentIds.Head, 1};
         }
 
-        public override int[] GetVariationComponentChoices()
+        static readonly int[][] HighVisibilityVestVariations = {
+            new[] {(int) VariationComponentIds.Torso, 0},
+            new[] {(int) VariationComponentIds.Torso, 1}
+        };
+        public override int[] GetHighVisibilityVestVariation()
         {
-            return new[] { 3 };
+            return HighVisibilityVestVariations.RandomElement();
         }
 
-        public override int[] GetVariationDrawableChoices(int componentId)
+        public override int[] GetBareChestVariation()
         {
-            if (componentId == 0)
-            {
-                return new[] { 0, 1 };
-            }
-
-            return new int[] { };
-        }
-
-        public override int[] GetVariationTextureChoices(int componentId, int drawableId)
-        {
-            if (componentId == 0)
-            {
-                if (drawableId == 0)
-                {
-                    return new[] { 0, 1, 2, 3 };
-                }
-
-                if (drawableId == 1)
-                {
-                    return new[] {0, 1, 2};
-                }
-            }
-
-            return new int[] { };
+            return null;
         }
 
         public override PedClassifier GetPedClassifier(Ped ped)

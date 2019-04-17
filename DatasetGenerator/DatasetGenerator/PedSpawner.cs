@@ -6,54 +6,149 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DatasetGenerator.Logging;
 
 namespace DatasetGenerator
 {
-    public abstract class PedSpawner
+    public abstract partial class PedSpawner
     {
-        private const float MaxDeviation = 10f;
-        private const int TaskDuration = 1000000;
-        private const float WanderRadius = 5f;
-        private const float WanderMinimalLength = 1f;
-        private const float WanderTimeBetweenWalks = 2f;
-        private static readonly Random Random = new Random();
+        private static int PropStage = 0;
+        private static int VariationStage = 0;
 
-        private static readonly Logger Log = Logger.GetLogger(typeof(PedSpawner));
-        
         public static Ped SpawnNewPed(Vector3 pedPosition)
         {
-            var typeIndex = Random.Next(0, PedType.PedTypes.Length);
+            /*var typeIndex = Random.Next(0, PedType.PedTypes.Length);
             var pedType = PedType.PedTypes[typeIndex];
 
-            return SpawnPedOfType(pedType, pedPosition);
+            pedType = PedType.PedTypes[5];*/
+
+            PedType[] propPicks;
+            PedType[] variationPicks;
+
+            switch (PropStage)
+            {
+                case 0:
+                    //bare head
+                    propPicks = PedType.PedTypes;
+                    break;
+                case 1:
+                    //helmet
+                    propPicks = HelmetTypes;
+                    break;
+                case 2:
+                    //face shield
+                    propPicks = FaceShieldTypes;
+                    break;
+                case 3:
+                    //hearing protection
+                    propPicks = HearingProtectionTypes;
+                    break;
+                default:
+                    propPicks = new PedType[] { };
+                    break;
+            }
+
+            switch (VariationStage)
+            {
+                case 0:
+                    //bare chest
+                    variationPicks = BareChestTypes;
+                    break;
+                case 1:
+                    //hvv chest
+                    variationPicks = HvvTypes;
+                    break;
+                default:
+                    variationPicks = new PedType[] { };
+                    break;
+            }
+
+            var intersection = propPicks.Intersect(variationPicks);
+
+            var pedType = intersection.RandomElement();
+
+
+            var spawnedPed = SpawnPedOfType(pedType, pedPosition);
+
+            PropStage = (PropStage + 1) % 4;
+            VariationStage = (VariationStage + 1) % 2;
+
+            return spawnedPed;
         }
 
         public static Ped SpawnPedOfType(PedType pedType, Vector3 pedPosition)
         {
-            var ped = new Ped(pedType.GetModel(), pedPosition, 0);
+            var ped = pedType.SpawnPed(pedPosition);
 
-            Log.Debug($"Spawned ped of type {pedType.TypeName} with model {pedType.GetModel().Name}");
+            int[] variation;
+            int[] props;
 
-            //let the game choose a random variation. Choose random props instead
-
-            //List<int[]> randomProps = pedType.GetRandomProps();
-            List<int[]> randomProps = new List<int[]> {ped.GetRandomProps()};
-
-            foreach (var prop in randomProps/*.Where(prop => prop != null)*/)
+            switch (PropStage)
             {
-                if (prop == null)
-                {
-                    Log.Debug("No props for this ped");
-                    continue;
-                }
-                else
-                {
-                    Log.Debug("Setting random props for ped: " +
-                              string.Join(",", prop));
-                }
+                case 0:
+                    //bare head
+                    props = null;
+                    break;
+                case 1:
+                    //helmet
+                    props = pedType.GetHelmetProps();
+                    break;
+                case 2:
+                    //face shield
+                    props = pedType.GetFaceShieldProps();
+                    break;
+                case 3:
+                    //hearing protection
+                    props = pedType.GetHearingProtectionProps();
+                    break;
+                default:
+                    props = null;
+                    break;
+            }
 
-                ped.SetPropIndex((PropComponentIds) prop[0], prop[1], prop[2]);
+            switch (VariationStage)
+            {
+                case 0:
+                    //bare chest
+                    variation = pedType.GetBareChestVariation();
+                    break;
+                case 1:
+                    //hvv chest
+                    variation = pedType.GetHighVisibilityVestVariation();
+                    break;
+                default:
+                    variation = null;
+                    break;
+            }
+
+            Log.Debug($"Spawned ped of type {pedType.TypeName} with model {ped.Model.Name}.");
+
+            
+            if (props == null)
+            {
+                Log.Debug("No props for this ped");
+            }
+            else
+            {
+                Log.Debug("Setting random props for ped: " +
+                          string.Join(",", props));
+
+                var propTextures = ped.GetPropTextureVariations(props[0], props[1]);
+                var textureId = Random.Next(0, propTextures);
+                ped.SetPropIndex((PropComponentIds)props[0], props[1], textureId);
+            }
+
+            if (variation == null)
+            {
+                Log.Debug("No variation for this ped");
+            }
+            else
+            {
+                Log.Debug("Setting random props for ped: " +
+                          string.Join(",", variation));
+
+                var variationTextures = ped.GetTextureVariationCount(variation[0], variation[1]);
+                var textureId = Random.Next(0, variationTextures);
+                ped.SetVariation(variation[0], variation[1], textureId);
             }
 
             return ped;

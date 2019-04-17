@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.IO;
+using Newtonsoft.Json;
 using Rage;
 
 namespace DatasetGenerator.ScenarioCreation
@@ -24,6 +25,14 @@ namespace DatasetGenerator.ScenarioCreation
             WeatherSettings = loadedScenario.WeatherSettings;
         }
 
+        public void FromJson(FileInfo jsonFile)
+        {
+            using (var fileStream = jsonFile.OpenText())
+            {
+                FromJson(fileStream.ReadToEnd());
+            }
+        }
+
         public void Apply()
         {
             PlaceSettings.Apply();
@@ -31,6 +40,15 @@ namespace DatasetGenerator.ScenarioCreation
             WeatherSettings.Apply();
 
             SpawnedPeds = PedsSettings.Apply();
+        }
+
+        public void Clear()
+        {
+            CameraSettings.Clear();
+            PedsSettings.Clear();
+            PlaceSettings.Clear();
+            TimeSettings.Clear();
+            WeatherSettings.Clear();
         }
     }
 }

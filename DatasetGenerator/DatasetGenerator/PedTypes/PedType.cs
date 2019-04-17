@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using DatasetGenerator.PedClassifiers;
 using Rage;
 
 namespace DatasetGenerator.PedTypes
 {
-    public abstract class PedType
+    public abstract class PedType : IEquatable<PedType>
     {
         public static readonly PedType[] PedTypes =
         {
@@ -13,37 +12,11 @@ namespace DatasetGenerator.PedTypes
             new DockWorkerM(),
             new DockWorkerY(),
             new Construct01(), 
-            new Construct02(), 
+            new Construct02()
         };
 
-        public abstract int[] GetVariationComponentChoices();
-        public abstract int[] GetVariationDrawableChoices(int componentId);
-        public abstract int[] GetVariationTextureChoices(int componentId, int drawableId);
-        public abstract int[] GetPropComponentChoices();
-        public abstract int[] GetPropDrawableChoices(int componentId);
-        public abstract int[] GetPropTextureChoices(int componentId, int drawableId);
         public abstract PedClassifier GetPedClassifier(Ped ped);
         public abstract Model GetModel();
-
-        public List<int[]> GetRandomProps()
-        {
-            Random random = new Random();
-            
-            var randomProps = new List<int[]>();
-            foreach(var componentId in GetPropComponentChoices())
-            {
-                var randomDrawable = GetPropDrawableChoices(componentId).RandomElement();
-                //when drawable is -1 it means we do not add it
-                if (randomDrawable != -1)
-                {
-                    var randomTexture = GetPropTextureChoices(componentId, randomDrawable).RandomElement();
-
-                    randomProps.Add(new[] {componentId, randomDrawable, randomTexture});
-                }
-            }
-
-            return randomProps;
-        }
 
         public static PedType FromModel(Model model)
         {
@@ -56,6 +29,38 @@ namespace DatasetGenerator.PedTypes
             return null;
         }
 
+
+        public virtual Ped SpawnPed(Vector3 position)
+        {
+            return new Ped(GetModel(), position, 0);
+        }
+
         public string TypeName => GetType().Name;
+
+        public abstract int[] GetHelmetProps();
+        public abstract int[] GetFaceShieldProps();
+        public abstract int[] GetHearingProtectionProps();
+        public abstract int[] GetHighVisibilityVestVariation();
+        public abstract int[] GetBareChestVariation();
+
+        public bool Equals(PedType other)
+        {
+            if (other == null)
+                return false;
+            return TypeName == other.TypeName;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((PedType) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return TypeName.GetHashCode();
+        }
     }
 }

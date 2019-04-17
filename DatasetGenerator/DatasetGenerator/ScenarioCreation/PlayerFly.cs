@@ -28,7 +28,7 @@ namespace DatasetGenerator.ScenarioCreation
         protected override void HandleKeyboardState()
         {
             var localPlayerCharacter = Game.LocalPlayer.Character;
-            if (Game.IsKeyDown(Keys.NumPad5))
+            if (Game.IsKeyDown(Keys.Subtract))
             {
                 IsFlying = !IsFlying;
 

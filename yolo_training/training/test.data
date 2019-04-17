@@ -1,0 +1,6 @@
+classes= 1
+train  = /home/enrico/hdd/crop_onlypeople_dataset/train/list.txt
+#valid  = /home/enrico/hdd/dataset_450/valid/list.txt
+valid = /home/enrico/hdd/training/test.txt
+names = /home/enrico/hdd/training/people.names
+backup = backup/people/

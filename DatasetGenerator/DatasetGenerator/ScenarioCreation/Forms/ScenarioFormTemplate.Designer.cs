@@ -33,6 +33,7 @@
             this.loadScenarioButton = new System.Windows.Forms.Button();
             this.scenariosPathLabel = new System.Windows.Forms.Label();
             this.confirmationLabel = new System.Windows.Forms.Label();
+            this.clearButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // scenariosPathTextbox
@@ -81,11 +82,21 @@
             this.confirmationLabel.TabIndex = 5;
             this.confirmationLabel.Text = "Saved";
             // 
+            // clearButton
+            // 
+            this.clearButton.Location = new System.Drawing.Point(12, 156);
+            this.clearButton.Name = "clearButton";
+            this.clearButton.Size = new System.Drawing.Size(75, 23);
+            this.clearButton.TabIndex = 6;
+            this.clearButton.Text = "Clear (!!!)";
+            this.clearButton.UseVisualStyleBackColor = true;
+            // 
             // ScenarioFormTemplate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(299, 191);
+            this.Controls.Add(this.clearButton);
             this.Controls.Add(this.confirmationLabel);
             this.Controls.Add(this.scenariosPathLabel);
             this.Controls.Add(this.loadScenarioButton);
@@ -105,5 +116,6 @@
         private System.Windows.Forms.Button loadScenarioButton;
         private System.Windows.Forms.Label scenariosPathLabel;
         private System.Windows.Forms.Label confirmationLabel;
+        private System.Windows.Forms.Button clearButton;
     }
 }

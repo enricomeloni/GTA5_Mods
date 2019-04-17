@@ -10,5 +10,10 @@ namespace DatasetGenerator.ScenarioCreation
         {
             World.Weather = Weather;
         }
+
+        public void Clear()
+        {
+            Weather = 0;
+        }
     }
 }
