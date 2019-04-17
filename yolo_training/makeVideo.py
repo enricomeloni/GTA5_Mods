@@ -8,7 +8,6 @@ import progressbar
 
 from os import listdir
 from os.path import isfile, isdir, join
-import codecs
 
 colors = [
     (255, 0, 0),
@@ -33,7 +32,7 @@ writer = FFMpegWriter(fps=30, metadata=metadata)
 cameraDirs = [join(dataDir, cameraDir) for cameraDir in listdir(dataDir) if isdir(join(dataDir,cameraDir))]
 cameraIdx = 0
 for cameraDir in progressbar.progressbar(cameraDirs):
-    bmpFiles = [join(cameraDir,file) for file in listdir(cameraDir) if isfile(join(cameraDir,file)) and file.endswith('.bmp')]
+    bmpFiles = [join(cameraDir,file) for file in listdir(cameraDir) if isfile(join(cameraDir,file)) and file.endswith('.png')]
     bmpFiles.sort()
 
     fig = plt.figure(figsize=(14,14))
@@ -41,9 +40,9 @@ for cameraDir in progressbar.progressbar(cameraDirs):
         for bmpFile in progressbar.progressbar(bmpFiles):
             plt.clf()
             #print('Processing file ' + bmpFile)
-            txtFile = bmpFile.replace('.bmp', '.txt')
-
-            with codecs.open(txtFile, 'r', 'utf-8') as txtFileStream:
+            txtFile = bmpFile.replace('.png', '.txt')
+            
+            with open(txtFile) as txtFileStream:
                 content = txtFileStream.readlines()
 
             content = [x.strip().replace('\ufeff', '') for x in content]

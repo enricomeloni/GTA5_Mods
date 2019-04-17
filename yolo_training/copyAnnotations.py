@@ -1,7 +1,7 @@
 import sys
 from os.path import join
 from os import walk, makedirs
-from progressbar import progressbar
+import progressbar
 from shutil import copyfile
 
 srcDir = sys.argv[1]

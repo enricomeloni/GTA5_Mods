@@ -1,0 +1,5 @@
+classes= 7
+train  = C:/000/list.txt
+#valid  = D:/GitHub/GTA5_Mods/yolo_training/train_win/valid.scaled.txt
+names = D:/GitHub/GTA5_Mods/yolo_training/train_win/ppe.names
+backup = backup/ppe_scaled/

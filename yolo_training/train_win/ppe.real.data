@@ -1,0 +1,5 @@
+classes= 7
+train  = G:\dataset\train/list.txt
+valid  = C:\validation_free\list.txt
+names = D:/GitHub/GTA5_Mods/yolo_training/train_win/ppe.names
+backup = backup/ppe/
