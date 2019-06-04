@@ -38,7 +38,8 @@ namespace DatasetGenerator
             {
                 new DatasetAnnotator(scenario),
                 new ScenarioCreator(scenario),
-                new PlayerFly()
+                new PlayerFly(),
+                new BBoxDebugger()
             };
 
             //Game.FrameRender += DebugGraphicHandler;

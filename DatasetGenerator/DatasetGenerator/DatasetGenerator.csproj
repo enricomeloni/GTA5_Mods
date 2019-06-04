@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BBoxDebugger.cs" />
     <Compile Include="BoundingBoxes\BoundingBox.cs" />
     <Compile Include="BoundingBoxes\ChestBoundingBox.cs" />
     <Compile Include="BoundsDrawer.cs" />

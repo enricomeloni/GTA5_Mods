@@ -173,6 +173,12 @@ namespace DatasetGenerator.BoundingBoxes
             return extendedPoints.ToArray();
         }
 
+        public void DebugDraw3D(Color color)
+        {
+            //Game.DisplaySubtitle($"Center = {Center}; Orientation = {Orientation}, Size={Size}, color={color}");
+            Debug.DrawWireBox(Center, Orientation, Size, color);
+        }
+
 
         public abstract DetectedObject ToDetectedObject();
     }
